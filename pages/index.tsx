@@ -10,6 +10,7 @@ import ReactMarkdown from 'react-markdown'
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -55,6 +56,36 @@ interface contentInformation {
 };
 
 export default function Home() {
+
+  // Display Modes
+  const [displayType, setDisplayType] = useState(false);
+
+  const blockMode = () => {
+    var i: number = 0;
+    while(i < contents.length){
+      if(document.getElementById(i + "cb")){
+        document.getElementById(i + "cb")!.style.maxHeight = "fit-content";
+        i += 1;
+      }
+      else {break;}
+    }
+  }
+
+  const scriptMode = () => {
+    var i: number = 0;
+    while(i < contents.length){
+      if(document.getElementById(i + "cb")){
+        document.getElementById(i + "cb")!.style.maxHeight = "calc(12.5em + 3px)";
+        i += 1;
+      }
+      else {break;}
+    }
+  }
+
+  const handleBadgeVisibility = () => {
+    (displayType) ? scriptMode() : blockMode();
+    setDisplayType(!displayType);
+  };
 
   // TitleBar Elements
   const [titlename,setTitlename] = useState('Title Placeholder');
@@ -180,6 +211,9 @@ export default function Home() {
   
   const handleSubmitAuthor = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setName(authorName);
+    setEmail(authorEmail);
+    setCollege(authorCollege);
     if (name && email && college) {
       authorLister({names: name,emails: email,colleges: college},authorClick);
 
@@ -287,6 +321,7 @@ export default function Home() {
 
   const handleSubmitContent = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setHeader(contentHeader);
     setInfo(contentInfo);
     if (header && info) {
       contentLister({headers: header,infos: info});
@@ -310,6 +345,11 @@ export default function Home() {
 
   return (
     <>
+      <div className = {edits.relativeFixed}>
+        <Switch checked = {displayType} onChange = {handleBadgeVisibility}/>
+        <Button/>
+      </div>
+
       <div className = {edits.paperEdit} id = "EditPaper">
 
         <div className = {edits.titlebarContainerEdit} id = "TitleBar" onClick = {addTitlebar}>
@@ -372,7 +412,7 @@ export default function Home() {
               style = {{backgroundColor: '#dfe9f0'}}
               onChange = {(e) => {setTitlename(e.target.value)}} 
               className = {edits.inputTextEdit}
-            /> 
+            /> <br/>
             <TextField 
               fullWidth 
               variant = 'outlined' 
@@ -381,7 +421,7 @@ export default function Home() {
               style = {{backgroundColor: '#dfe9f0'}}
               onChange = {(e) => {setSubtitle(e.target.value)}} 
               className = {edits.inputTextEdit}
-            /> 
+            /> <br/>
             <Button 
               type = 'submit' 
               variant = 'contained' 
@@ -400,13 +440,9 @@ export default function Home() {
               label = 'Name' 
               style = {{backgroundColor: '#dfe9f0'}}
               value = {authorName}
-              onChange = {(e) => {
-                    setName(e.target.value);
-                    setAuthorName(e.target.value);
-                  }
-                } 
+              onChange = {(e) => {setAuthorName(e.target.value);}} 
               className = {edits.inputTextEdit}
-            /> 
+            /> <br/>
             <TextField 
               fullWidth
               variant = 'outlined' 
@@ -414,13 +450,9 @@ export default function Home() {
               label = 'Email' 
               style = {{backgroundColor: '#dfe9f0'}}
               value = {authorEmail}
-              onChange = {(e) => {
-                    setEmail(e.target.value);
-                    setAuthorEmail(e.target.value);
-                  }
-                } 
+              onChange = {(e) => {setAuthorEmail(e.target.value);}} 
               className = {edits.inputTextEdit}
-            /> 
+            /> <br/>
             <TextField  
               fullWidth
               variant = 'outlined' 
@@ -428,14 +460,9 @@ export default function Home() {
               label = 'College' 
               style = {{backgroundColor: '#dfe9f0'}}
               value = {authorCollege}
-              onChange = {(e) => 
-                  {
-                    setCollege(e.target.value);
-                    setAuthorCollege(e.target.value);
-                  }
-                } 
+              onChange = {(e) => {setAuthorCollege(e.target.value);}} 
               className = {edits.inputTextEdit}
-            /> 
+            /> <br/>
             <Button 
               type = 'submit' 
               variant = 'contained' 
@@ -454,26 +481,18 @@ export default function Home() {
               label = 'Content Header'
               style = {{backgroundColor: '#dfe9f0'}} 
               value = {contentHeader}
-              onChange = {(e) => {
-                    setHeader(e.target.value);
-                    setContentHeader(e.target.value);
-                  }
-                }  
+              onChange = {(e) => {setContentHeader(e.target.value);}}  
               className = {edits.inputTextEdit}
-            /> 
+            /> <br/>
             <Editor 
               renderHTML = {text => mdParser.render(text)}
               plugins = {plugins}
               id = 'InputField'
               style = {{backgroundColor: '#dfe9f0'}} 
               value = {contentInfo}
-              onChange = {(e) => {
-                console.log(e);
-                setContentInfo(e.text.toString());
-                }
-              }
+              onChange = {(e) => {setContentInfo(e.text.toString());}}
               className = {edits.inputTextEdit}
-            />;
+            /> <br/>
             {/* <TextField 
               multiline 
               fullWidth
