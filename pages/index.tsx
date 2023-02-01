@@ -345,9 +345,15 @@ export default function Home() {
 
   return (
     <>
-      <div className = {edits.relativeFixed}>
-        <Switch checked = {displayType} onChange = {handleBadgeVisibility}/>
-        <Button/>
+      <div className = {edits.relativeFixed} title = {(displayType) ? "Script Display" : "Block Display"} >
+        <Switch checked = {displayType} onChange = {handleBadgeVisibility} title = "Change Display Type" style = {{margin: "auto"}}/>
+        <Button
+          type = 'submit' 
+          variant = 'contained' 
+          color = 'secondary' 
+          title = "Enter Preview"
+          style = {{margin: "auto",marginBottom: '1px'}}
+        >Preview</Button>
       </div>
 
       <div className = {edits.paperEdit} id = "EditPaper">
