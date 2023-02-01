@@ -37,8 +37,6 @@ interface contentInformation {
   infos: string,
 };
 
-// var authorDetails: authorInformation[] = []
-
 export default function Home() {
 
   // TitleBar Elements
@@ -95,12 +93,6 @@ export default function Home() {
     document.getElementById("TitleBar")!.style.pointerEvents = "none";
     document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
     document.getElementById("ContentContainer")!.style.pointerEvents = "none";
-
-    if(authors.length >= 2){
-      document.getElementById("AddAuthor")!.style.display = "none";
-    } else{
-      document.getElementById("AddAuthor")!.style.display = "block";
-    }
   }
 
   const resetAuthor = () => {
@@ -123,19 +115,6 @@ export default function Home() {
   const cancelAuthor = () => {
     authorLister({names: name,emails: email,colleges: college},authorClick);
     resetAuthor();
-    if (document.getElementById("AddAuthor")!.style.display == "none") {
-      if(authors.length < 2) {
-        document.getElementById("AddAuthor")!.style.display = "block";
-      } else{
-        document.getElementById("AddAuthor")!.style.display = "none";
-      }
-    }
-    if (authors.length == 0) {
-      document.getElementById("AddAuthor")!.style.display = "block";
-    }
-    if ((document.getElementById("AddAuthor")!.style.display == "block" ) && (authors.length > 2)){
-      document.getElementById("AddAuthor")!.style.display = "block";
-    }
   }
 
   const removeAuthor = (i: number) => {
@@ -143,17 +122,6 @@ export default function Home() {
     document.getElementById("TitleInputTextField")!.style.display = "none";
     document.getElementById("AuthorInputTextField")!.style.display = "none";
     document.getElementById("ContentInputTextField")!.style.display = "none";
-
-    if (document.getElementById("AddAuthor")!.style.display == "none") {
-      if (authors.length <= 3) {
-        document.getElementById("AddAuthor")!.style.display = "block";
-      } else{
-        document.getElementById("AddAuthor")!.style.display = "none";
-      }
-    }
-    if (authors.length == 0) {
-      document.getElementById("AddAuthor")!.style.display = "block";
-    }
   }
 
   const authorBufferClickers = (author: authorInformation, i: number) => {
@@ -172,14 +140,17 @@ export default function Home() {
   const handleClickOpenAuthor = () => {
     setOpenAuthor(true);
   };
+
   const handleCloseEditAuthor = () => {
     editAuthor();
     setOpenAuthor(false);
   };
+
   const handleCloseRemoveAuthor = () => {
     resetAuthor();
     setOpenAuthor(false);
   };
+
   const handleCloseCancelAuthor = () => {
     cancelAuthor();
     setOpenAuthor(false);
@@ -269,14 +240,17 @@ export default function Home() {
   const handleClickOpenContent = () => {
     setOpenContent(true);
   };
+
   const handleCloseEditContent = () => {
     editContent();
     setOpenContent(false);
   };
+
   const handleCloseRemoveContent = () => {
     resetContent();
     setOpenContent(false);
   };
+  
   const handleCloseCancelContent = () => {
     cancelContent();
     setOpenContent(false);
@@ -316,9 +290,10 @@ export default function Home() {
         </div>
 
         <div className = {edits.authorContainerEdit} id = "AuthorContainer">
-          <div className = {edits.authorEdit} id = "AddAuthor" title = "Add Author" onClick = {addAuthor}>
+          {(authors.length < 3) &&
+          (<div className = {edits.authorEdit} id = "AddAuthor" title = "Add Author" onClick = {addAuthor}>
             <i>Add Author</i>
-          </div>
+          </div>)}
 
           {authors.map((author, idx) => (
             
