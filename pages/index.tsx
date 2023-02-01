@@ -6,6 +6,7 @@ import edits from '@/styles/Home.module.css'
 
 import * as React from 'react';
 import {useState} from 'react';
+import ReactMarkdown from 'react-markdown'
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -14,12 +15,28 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+import Editor, { Plugins } from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css';
 import DOMPurify from 'dompurify'
 
 
-
 const inter = Inter({ subsets: ['latin'] })
- 
+const mdParser = new MarkdownIt(); 
+const plugins = [
+  'font-bold', 
+  'font-italic', 
+  'font-underline', 
+  'divider', 
+  'list-unordered',
+  'list-ordered',
+  'block-code-block',
+  'link', 
+  'image', 
+  'logger'
+];
+
 
 interface titleInformation {
   titlenames : string,
@@ -270,6 +287,7 @@ export default function Home() {
 
   const handleSubmitContent = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setInfo(contentInfo);
     if (header && info) {
       contentLister({headers: header,infos: info});
       resetContent();
@@ -335,7 +353,7 @@ export default function Home() {
               onClick = {() => {contentBufferClickers(content,idx)}} 
             >
               <div className = {edits.contentHeaderEdit} id = {idx + "ch"}>{content.headers}</div>
-              <div className = {edits.contentBodyEdit} id = {idx + "cb"}>{content.infos}</div>
+              <div className = {edits.contentBodyEdit} id = {idx + "cb"}><ReactMarkdown>{content.infos}</ReactMarkdown></div>
             </div>
           ))}
         </div>
@@ -443,7 +461,20 @@ export default function Home() {
                 }  
               className = {edits.inputTextEdit}
             /> 
-            <TextField 
+            <Editor 
+              renderHTML = {text => mdParser.render(text)}
+              plugins = {plugins}
+              id = 'InputField'
+              style = {{backgroundColor: '#dfe9f0'}} 
+              value = {contentInfo}
+              onChange = {(e) => {
+                console.log(e);
+                setContentInfo(e.text.toString());
+                }
+              }
+              className = {edits.inputTextEdit}
+            />;
+            {/* <TextField 
               multiline 
               fullWidth
               variant = 'outlined' 
@@ -454,10 +485,10 @@ export default function Home() {
               onChange = {(e) => {
                 setInfo(e.target.value);
                 setContentInfo(e.target.value);
-              }
-            }  
+                }
+              } 
               className = {edits.inputTextEdit}
-            />
+            />*/}
             <Button 
               type = 'submit' 
               variant = 'contained' 
