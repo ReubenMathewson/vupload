@@ -21,7 +21,7 @@ import DOMPurify from 'dompurify'
 const inter = Inter({ subsets: ['latin'] })
  
 
-interface titleInfo {
+interface titleInformation {
   titlenames : string,
   subtitles : string,
 };
@@ -40,12 +40,12 @@ interface contentInformation {
 export default function Home() {
 
   // TitleBar Elements
-  const [titlename,setTitlename] = useState('');
-  const [subtitle,setSubtitle] = useState('');
- 
+  const [titlename,setTitlename] = useState('Title Placeholder');
+  const [subtitle,setSubtitle] = useState('Subtitle Placeholder');
+
+  const [titlebar,setTitlbar] = useState<titleInformation>({titlenames: titlename,subtitles: subtitle}); 
   function updateTitlebar() {
-    document.getElementById("TitleName")!.innerHTML = DOMPurify.sanitize(titlename);
-    document.getElementById("SubTitle")!.innerHTML = DOMPurify.sanitize(subtitle);
+    setTitlbar({titlenames: titlename,subtitles: subtitle});
   }
 
   function addTitlebar() {
@@ -77,6 +77,7 @@ export default function Home() {
   const [authorCollege,setAuthorCollege] = useState('');
   
   const [authorClick,setAuthorClick] = useState(0);
+  const [authorAdderText, setAuthorAdderText] = useState('Add Author');
 
   const [authors, setAuthors] = useState<authorInformation[]>([]); //Authors are stored in reverse order in list
   const authorLister = (author: authorInformation,i: number = authorClick) => {
@@ -93,6 +94,8 @@ export default function Home() {
     document.getElementById("TitleBar")!.style.pointerEvents = "none";
     document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
     document.getElementById("ContentContainer")!.style.pointerEvents = "none";
+
+    setAuthorAdderText('Adding Author...');
   }
 
   const resetAuthor = () => {
@@ -110,6 +113,8 @@ export default function Home() {
     setAuthorEmail(email);
     setAuthorCollege(college);
     addAuthor();
+
+    setAuthorAdderText('Editing Author...');
   }
 
   const cancelAuthor = () => {
@@ -174,6 +179,8 @@ export default function Home() {
         top: access?.scrollTop,
         behavior: 'smooth'
       });
+
+      setAuthorAdderText('Add Author');
     }
   }
 
@@ -185,6 +192,7 @@ export default function Home() {
   const [contentInfo,setContentInfo] = useState('');
   
   var [contentClick,setContentClick] = useState(0);
+  const [contentAdderText, setContentAdderText] = useState('Add Content');
 
   const [contents, setContents] = useState<contentInformation[]>([]); //Contents are stored in reverse order in list
   const contentLister = (content: contentInformation,i:number = contentClick) => {
@@ -201,6 +209,8 @@ export default function Home() {
     document.getElementById("TitleBar")!.style.pointerEvents = "none";
     document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
     document.getElementById("ContentContainer")!.style.pointerEvents = "none";
+
+    setContentAdderText('...Adding Content');
   }
 
   const resetContent = () => {    
@@ -215,6 +225,8 @@ export default function Home() {
     setContentHeader(header);
     setContentInfo(info);
     addContent();
+
+    setContentAdderText('...Editing Content');
   }
 
   const cancelContent = () => {
@@ -250,7 +262,7 @@ export default function Home() {
     resetContent();
     setOpenContent(false);
   };
-  
+
   const handleCloseCancelContent = () => {
     cancelContent();
     setOpenContent(false);
@@ -273,6 +285,8 @@ export default function Home() {
         top: access?.scrollTop,
         behavior: 'smooth'
       });
+
+      setContentAdderText('Add Content');
     }
   }
 
@@ -282,22 +296,21 @@ export default function Home() {
 
         <div className = {edits.titlebarContainerEdit} id = "TitleBar" onClick = {addTitlebar}>
           <div className = {edits.titleEdit} id = "TitleName" title = "Edit Title">
-            <i>Title Placeholder</i>
+            <i>{titlebar.titlenames}</i>
           </div>
           <div className = {edits.subtitleEdit} id = "SubTitle" title = "Edit Sub-Title">
-              <i>Subtitle Placeholder</i>
+              <i>{titlebar.subtitles}</i>
           </div>
         </div>
 
         <div className = {edits.authorContainerEdit} id = "AuthorContainer">
           {(authors.length < 3) &&
           (<div className = {edits.authorEdit} id = "AddAuthor" title = "Add Author" onClick = {addAuthor}>
-            <i>Add Author</i>
+            <i>{authorAdderText}</i>
           </div>)}
 
           {authors.map((author, idx) => (
-            
-            <div className = {edits.authorEdit} key = {idx.toString()} title = "Edit Author" 
+            <div className = {edits.authorEdit} key = {idx.toString()} id = {idx + "a"} title = "Edit Author" 
               onClick = {() => {authorBufferClickers(author,idx)}}
             >
               <p>{author.names}</p>
@@ -309,12 +322,16 @@ export default function Home() {
 
         <div className = {edits.contentContainerEdit} id = "ContentContainer">
           <div className = {edits.contentBoxEdit} id = "ContentBoxAdd" title = "Add Content" onClick = {addContent}>
-            <div className = {edits.contentHeaderEdit} id = "ContentHeaderAdd" title = "Add Content Header"><i>Add Content Header</i></div>
-            <div className = {edits.contentBodyEdit} id = "ContentBodyAdd" title = "Add Content Body"><i>Add Content Body</i></div>
+            <div className = {edits.contentHeaderEdit} id = "ContentHeaderAdd" title = "Add Content Header">
+              <i>{contentAdderText + " Header"}</i>
+            </div>
+            <div className = {edits.contentBodyEdit} id = "ContentBodyAdd" title = "Add Content Body">
+              <i>{contentAdderText + " Body"}</i>
+            </div>
           </div>
 
           {contents.map((content, idx) => (
-            <div className = {edits.contentBoxEdit} key = {idx + "c"} title = "Edit Content"
+            <div className = {edits.contentBoxEdit} key = {idx.toString()} id = {idx + "c"} title = "Edit Content"
               onClick = {() => {contentBufferClickers(content,idx)}} 
             >
               <div className = {edits.contentHeaderEdit} id = {idx + "ch"}>{content.headers}</div>
@@ -449,6 +466,7 @@ export default function Home() {
             >Submit</Button>
           </form>
         </div>
+
       </div>
 
       <div>
