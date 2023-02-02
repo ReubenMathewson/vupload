@@ -87,13 +87,47 @@ export default function Home() {
     setDisplayType(!displayType);
   };
 
+  const [preview,setPreview] = useState(false)
+  const previewMode = () => {
+    setPreview(!preview);
+    if(preview){
+      document.getElementById("AddAuthor")!.style.display = "none";
+      document.getElementById("ContentBoxAdd")!.style.display = "none";
+
+      document.getElementById("TitleInputTextField")!.style.display = "none";
+      document.getElementById("AuthorInputTextField")!.style.display = "none";
+      document.getElementById("ContentInputTextField")!.style.display = "none";
+
+      document.getElementById("TitleBar")!.style.pointerEvents = "none";
+      document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
+      document.getElementById("ContentContainer")!.style.pointerEvents = "none";
+      document.getElementById("SwitchSetter")!.style.pointerEvents = "none";
+
+      setDisplayType(true);
+      handleBadgeVisibility();
+
+      resetAuthor();
+      resetContent();
+    } else {
+      if(authors.length < 3) {document.getElementById("AddAuthor")!.style.display = "block";}
+      document.getElementById("ContentBoxAdd")!.style.display = "block";
+
+      document.getElementById("TitleBar")!.style.pointerEvents = "all";
+      document.getElementById("AuthorContainer")!.style.pointerEvents = "all";
+      document.getElementById("ContentContainer")!.style.pointerEvents = "all";
+      document.getElementById("SwitchSetter")!.style.pointerEvents = "all";
+
+      document.getElementById("PreviewButton")!.style.backgroundColor = "#a84593";
+    }
+  }
+
   // TitleBar Elements
   const [titlename, setTitlename] = useState('Title Placeholder');
   const [subtitle, setSubtitle] = useState('Subtitle Placeholder');
 
-  const [titlebar, setTitlbar] = useState<titleInformation>({ titlenames: titlename, subtitles: subtitle });
+  const [titlebar, setTitlebar] = useState<titleInformation>({ titlenames: titlename, subtitles: subtitle });
   function updateTitlebar() {
-    setTitlbar({ titlenames: titlename, subtitles: subtitle });
+    setTitlebar({ titlenames: titlename, subtitles: subtitle });
   }
 
   function addTitlebar() {
@@ -101,6 +135,13 @@ export default function Home() {
     document.getElementById("AuthorInputTextField")!.style.display = "none";
     document.getElementById("ContentInputTextField")!.style.display = "none";
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+    document.getElementById("TitleBar")!.style.pointerEvents = "none";
+    document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
+    document.getElementById("ContentContainer")!.style.pointerEvents = "none";
+    document.getElementById("ModeSetter")!.style.pointerEvents = "none";
+
+    document.getElementById("PreviewButton")!.style.backgroundColor = "#dddddd";
   }
 
   const handleSubmitTitle = (e: { preventDefault: () => void }) => {
@@ -113,6 +154,13 @@ export default function Home() {
       window.scrollTo({
         top: access?.scrollTop
       });
+
+      document.getElementById("TitleBar")!.style.pointerEvents = "all";
+      document.getElementById("AuthorContainer")!.style.pointerEvents = "all";
+      document.getElementById("ContentContainer")!.style.pointerEvents = "all";
+      document.getElementById("ModeSetter")!.style.pointerEvents = "all";
+
+      document.getElementById("PreviewButton")!.style.backgroundColor = "#a84593";
     }
   }
 
@@ -143,7 +191,10 @@ export default function Home() {
     document.getElementById("TitleBar")!.style.pointerEvents = "none";
     document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
     document.getElementById("ContentContainer")!.style.pointerEvents = "none";
+    document.getElementById("ModeSetter")!.style.pointerEvents = "none";
 
+    document.getElementById("PreviewButton")!.style.backgroundColor = "#dddddd";
+    
     setAuthorAdderText('Adding Author...');
   }
 
@@ -224,6 +275,9 @@ export default function Home() {
       document.getElementById("TitleBar")!.style.pointerEvents = "all";
       document.getElementById("AuthorContainer")!.style.pointerEvents = "all";
       document.getElementById("ContentContainer")!.style.pointerEvents = "all";
+      document.getElementById("ModeSetter")!.style.pointerEvents = "all";
+
+      document.getElementById("PreviewButton")!.style.backgroundColor = '#a84593';
 
       var access = document.getElementById("AuthorContainer");
       window.scrollTo({
@@ -261,6 +315,9 @@ export default function Home() {
     document.getElementById("TitleBar")!.style.pointerEvents = "none";
     document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
     document.getElementById("ContentContainer")!.style.pointerEvents = "none";
+    document.getElementById("ModeSetter")!.style.pointerEvents = "none";
+
+    document.getElementById("PreviewButton")!.style.backgroundColor = "#dddddd"; 
 
     setContentAdderText('...Adding Content');
   }
@@ -333,6 +390,9 @@ export default function Home() {
       document.getElementById("TitleBar")!.style.pointerEvents = "all";
       document.getElementById("AuthorContainer")!.style.pointerEvents = "all";
       document.getElementById("ContentContainer")!.style.pointerEvents = "all";
+      document.getElementById("ModeSetter")!.style.pointerEvents = "all";
+
+      document.getElementById("PreviewButton")!.style.backgroundColor = '#a84593';
 
       var access = document.getElementById("ContentContainer");
       window.scrollTo({
@@ -348,17 +408,18 @@ export default function Home() {
 
   return (
     <>
-      <div className={edits.relativeFixed} title={(displayType) ? "Script Display" : "Block Display"} >
-        <Switch checked={displayType} onChange={handleBadgeVisibility} title="Change Display Type" style={{ margin: "auto" }} />
-        <a href="./previewTemplate">
+      <div className={edits.relativeFixed} title={(displayType) ? "Script Display" : "Block Display"} id = "ModeSetter">
+        <Switch checked={displayType} onChange={handleBadgeVisibility} title="Change Display Type" style={{ margin: "auto" }} 
+        id = "SwitchSetter"/>
           <Button
             type='submit'
             variant='contained'
             color='secondary'
             title="Enter Preview"
             style={{ margin: "auto", marginBottom: '1px' }}
+            id = "PreviewButton"
+            onClick = {() => {previewMode()}}
           >Preview</Button>
-        </a>
       </div>
 
       <div className={edits.paperEdit} id="EditPaper">
