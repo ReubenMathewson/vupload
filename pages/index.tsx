@@ -5,7 +5,7 @@ import { Inter } from '@next/font/google'
 import edits from '@/styles/Home.module.css'
 
 import * as React from 'react';
-import {useState} from 'react';
+import { useState,useEffect } from 'react';
 import ReactMarkdown from 'react-markdown'
 
 import Button from '@mui/material/Button';
@@ -24,31 +24,30 @@ import DOMPurify from 'dompurify'
 
 
 const inter = Inter({ subsets: ['latin'] })
-const mdParser = new MarkdownIt(); 
+export const mdParser = new MarkdownIt();
 const plugins = [
-  'font-bold', 
-  'font-italic', 
-  'font-underline', 
-  'divider', 
+  'font-bold',
+  'font-italic',
+  'font-underline',
+  'divider',
   'list-unordered',
   'list-ordered',
   'block-code-block',
-  'link', 
+  'link',
   'image',
-  // 'table',
+  'table',
   'logger'
 ];
 
-
 interface titleInformation {
-  titlenames : string,
-  subtitles : string,
+  titlenames: string,
+  subtitles: string,
 };
 
 interface authorInformation {
-  names : string,
-  emails : string,
-  colleges : string
+  names: string,
+  emails: string,
+  colleges: string
 };
 
 interface contentInformation {
@@ -63,23 +62,23 @@ export default function Home() {
 
   const blockMode = () => {
     var i: number = 0;
-    while(i < contents.length){
-      if(document.getElementById(i + "cb")){
+    while (i < contents.length) {
+      if (document.getElementById(i + "cb")) {
         document.getElementById(i + "cb")!.style.maxHeight = "fit-content";
         i += 1;
       }
-      else {break;}
+      else { break; }
     }
   }
 
   const scriptMode = () => {
     var i: number = 0;
-    while(i < contents.length){
-      if(document.getElementById(i + "cb")){
+    while (i < contents.length) {
+      if (document.getElementById(i + "cb")) {
         document.getElementById(i + "cb")!.style.maxHeight = "calc(12.5em + 3px)";
         i += 1;
       }
-      else {break;}
+      else { break; }
     }
   }
 
@@ -89,48 +88,49 @@ export default function Home() {
   };
 
   // TitleBar Elements
-  const [titlename,setTitlename] = useState('Title Placeholder');
-  const [subtitle,setSubtitle] = useState('Subtitle Placeholder');
+  const [titlename, setTitlename] = useState('Title Placeholder');
+  const [subtitle, setSubtitle] = useState('Subtitle Placeholder');
 
-  const [titlebar,setTitlbar] = useState<titleInformation>({titlenames: titlename,subtitles: subtitle}); 
+  const [titlebar, setTitlbar] = useState<titleInformation>({ titlenames: titlename, subtitles: subtitle });
   function updateTitlebar() {
-    setTitlbar({titlenames: titlename,subtitles: subtitle});
+    setTitlbar({ titlenames: titlename, subtitles: subtitle });
   }
 
   function addTitlebar() {
     document.getElementById("TitleInputTextField")!.style.display = "block";
     document.getElementById("AuthorInputTextField")!.style.display = "none";
     document.getElementById("ContentInputTextField")!.style.display = "none";
-    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   }
 
   const handleSubmitTitle = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (titlename && subtitle) {
-        updateTitlebar();
-        document.getElementById("TitleInputTextField")!.style.display = "none";
-        var access = document.getElementById("TitleBar");
-        window.scrollTo({
-          top: access?.scrollTop
-        });
+      updateTitlebar();
+
+      document.getElementById("TitleInputTextField")!.style.display = "none";
+      var access = document.getElementById("TitleBar");
+      window.scrollTo({
+        top: access?.scrollTop
+      });
     }
   }
 
   // Author Elements
-  const [name,setName] = useState('');
-  const [email,setEmail] = useState('');
-  const [college,setCollege] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [college, setCollege] = useState('');
 
-  const [authorName,setAuthorName] = useState('');
-  const [authorEmail,setAuthorEmail] = useState('');
-  const [authorCollege,setAuthorCollege] = useState('');
-  
-  const [authorClick,setAuthorClick] = useState(0);
+  const [authorName, setAuthorName] = useState('');
+  const [authorEmail, setAuthorEmail] = useState('');
+  const [authorCollege, setAuthorCollege] = useState('');
+
+  const [authorClick, setAuthorClick] = useState(0);
   const [authorAdderText, setAuthorAdderText] = useState('Add Author');
 
   const [authors, setAuthors] = useState<authorInformation[]>([]); //Authors are stored in reverse order in list
-  const authorLister = (author: authorInformation,i: number = authorClick) => {
-    authors.splice(i,0,author);
+  const authorLister = (author: authorInformation, i: number = authorClick) => {
+    authors.splice(i, 0, author);
     setAuthors(authors);
   }
 
@@ -138,7 +138,7 @@ export default function Home() {
     document.getElementById("TitleInputTextField")!.style.display = "none";
     document.getElementById("AuthorInputTextField")!.style.display = "block";
     document.getElementById("ContentInputTextField")!.style.display = "none";
-    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
     document.getElementById("TitleBar")!.style.pointerEvents = "none";
     document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
@@ -167,7 +167,7 @@ export default function Home() {
   }
 
   const cancelAuthor = () => {
-    authorLister({names: name,emails: email,colleges: college},authorClick);
+    authorLister({ names: name, emails: email, colleges: college }, authorClick);
     resetAuthor();
   }
 
@@ -209,15 +209,14 @@ export default function Home() {
     cancelAuthor();
     setOpenAuthor(false);
   };
-  
+
   const handleSubmitAuthor = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setName(authorName);
     setEmail(authorEmail);
     setCollege(authorCollege);
     if (name && email && college) {
-      authorLister({names: name,emails: email,colleges: college},authorClick);
-
+      authorLister({ names: name, emails: email, colleges: college }, authorClick);
       resetAuthor();
 
       document.getElementById("AuthorInputTextField")!.style.display = "none";
@@ -236,19 +235,20 @@ export default function Home() {
     }
   }
 
-  // Content Elements
-  const [header,setHeader] = useState('');
-  const [info,setInfo] = useState('');
 
-  const [contentHeader,setContentHeader] = useState('');
-  const [contentInfo,setContentInfo] = useState('');
-  
-  var [contentClick,setContentClick] = useState(0);
+  // Content Elements
+  const [header, setHeader] = useState('');
+  const [info, setInfo] = useState('');
+
+  const [contentHeader, setContentHeader] = useState('');
+  const [contentInfo, setContentInfo] = useState('');
+
+  var [contentClick, setContentClick] = useState(0);
   const [contentAdderText, setContentAdderText] = useState('Add Content');
 
   const [contents, setContents] = useState<contentInformation[]>([]); //Contents are stored in reverse order in list
-  const contentLister = (content: contentInformation,i:number = contentClick) => {
-    contents.splice(i,0,content);
+  const contentLister = (content: contentInformation, i: number = contentClick) => {
+    contents.splice(i, 0, content);
     setContents(contents);
   }
 
@@ -256,7 +256,7 @@ export default function Home() {
     document.getElementById("TitleInputTextField")!.style.display = "none";
     document.getElementById("AuthorInputTextField")!.style.display = "none";
     document.getElementById("ContentInputTextField")!.style.display = "block";
-    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
     document.getElementById("TitleBar")!.style.pointerEvents = "none";
     document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
@@ -265,7 +265,7 @@ export default function Home() {
     setContentAdderText('...Adding Content');
   }
 
-  const resetContent = () => {    
+  const resetContent = () => {
     setHeader('');
     setInfo('');
     setContentHeader('');
@@ -282,7 +282,7 @@ export default function Home() {
   }
 
   const cancelContent = () => {
-    contentLister({headers: header, infos: info});
+    contentLister({ headers: header, infos: info });
     resetContent();
   }
 
@@ -325,7 +325,7 @@ export default function Home() {
     setHeader(contentHeader);
     setInfo(contentInfo);
     if (header && info) {
-      contentLister({headers: header,infos: info});
+      contentLister({ headers: header, infos: info });
       resetContent();
 
       document.getElementById("ContentInputTextField")!.style.display = "none";
@@ -340,187 +340,177 @@ export default function Home() {
         behavior: 'smooth'
       });
 
-      handleBadgeVisibility();
       setContentAdderText('Add Content');
     }
   }
 
+
+
   return (
     <>
-      <div className = {edits.relativeFixed} title = {(displayType) ? "Script Display" : "Block Display"} >
-        <Switch checked = {displayType} onChange = {handleBadgeVisibility} title = "Change Display Type" style = {{margin: "auto"}}/>
-        <Button
-          type = 'submit' 
-          variant = 'contained' 
-          color = 'secondary' 
-          title = "Enter Preview"
-          style = {{margin: "auto",marginBottom: '1px'}}
-        >Preview</Button>
+      <div className={edits.relativeFixed} title={(displayType) ? "Script Display" : "Block Display"} >
+        <Switch checked={displayType} onChange={handleBadgeVisibility} title="Change Display Type" style={{ margin: "auto" }} />
+        <a href="./previewTemplate">
+          <Button
+            type='submit'
+            variant='contained'
+            color='secondary'
+            title="Enter Preview"
+            style={{ margin: "auto", marginBottom: '1px' }}
+          >Preview</Button>
+        </a>
       </div>
 
-      <div className = {edits.paperEdit} id = "EditPaper">
+      <div className={edits.paperEdit} id="EditPaper">
 
-        <div className = {edits.titlebarContainerEdit} id = "TitleBar" onClick = {addTitlebar}>
-          <div className = {edits.titleEdit} id = "TitleName" title = "Edit Title">
+        <div className={edits.titlebarContainerEdit} id="TitleBar" onClick={addTitlebar}>
+          <div className={edits.titleEdit} id="TitleName" title="Edit Title">
             <i>{titlebar.titlenames}</i>
           </div>
-          <div className = {edits.subtitleEdit} id = "SubTitle" title = "Edit Sub-Title">
-              <i>{titlebar.subtitles}</i>
+          <div className={edits.subtitleEdit} id="SubTitle" title="Edit Sub-Title">
+            <i>{titlebar.subtitles}</i>
           </div>
         </div>
 
-        <div className = {edits.authorContainerEdit} id = "AuthorContainer">
+        <div className={edits.authorContainerEdit} id="AuthorContainer">
           {(authors.length < 3) &&
-          (<div className = {edits.authorEdit} id = "AddAuthor" title = "Add Author" onClick = {addAuthor}>
-            <i>{authorAdderText}</i>
-          </div>)}
+            (<div className={edits.authorEdit} id="AddAuthor" title="Add Author" onClick={addAuthor}>
+              <i>{authorAdderText}</i>
+            </div>)}
 
           {authors.map((author, idx) => (
-            <div className = {edits.authorEdit} key = {idx.toString()} id = {idx + "a"} title = "Edit Author" 
-              onClick = {() => {authorBufferClickers(author,idx)}}
+            <div className={edits.authorEdit} key={idx.toString()} id={idx + "a"} title="Edit Author"
+              onClick={() => { authorBufferClickers(author, idx) }}
             >
               <p>{author.names}</p>
               <p>{author.emails}</p>
               <p>{author.colleges}</p>
             </div>
           ))}
-        </div> 
+        </div>
 
-        <div className = {edits.contentContainerEdit} id = "ContentContainer">
-          <div className = {edits.contentBoxEdit} id = "ContentBoxAdd" title = "Add Content" onClick = {addContent}>
-            <div className = {edits.contentHeaderEdit} id = "ContentHeaderAdd" title = "Add Content Header">
+        <div className={edits.contentContainerEdit} id="ContentContainer">
+          <div className={edits.contentBoxEdit} id="ContentBoxAdd" title="Add Content" onClick={addContent}>
+            <div className={edits.contentHeaderEdit} id="ContentHeaderAdd" title="Add Content Header">
               <i>{contentAdderText + " Header"}</i>
             </div>
-            <div className = {edits.contentBodyEdit} id = "ContentBodyAdd" title = "Add Content Body">
+            <div className={edits.contentBodyEdit} id="ContentBodyAdd" title="Add Content Body">
               <i>{contentAdderText + " Body"}</i>
             </div>
           </div>
 
           {contents.map((content, idx) => (
-            <div className = {edits.contentBoxEdit} key = {idx.toString()} id = {idx + "c"} title = "Edit Content"
-              onClick = {() => {contentBufferClickers(content,idx)}} 
+            <div className={edits.contentBoxEdit} key={idx.toString()} id={idx + "c"} title="Edit Content"
+              onClick={() => { contentBufferClickers(content, idx) }}
             >
-              <div className = {edits.contentHeaderEdit} id = {idx + "ch"}>{content.headers}</div>
-              <div className = {edits.contentBodyEdit} id = {idx + "cb"}><ReactMarkdown>{content.infos}</ReactMarkdown></div>
+              <div className={edits.contentHeaderEdit} id={idx + "ch"}>{content.headers}</div>
+              <div className={edits.contentBodyEdit} id={idx + "cb"} dangerouslySetInnerHTML={{ __html: mdParser.render(content.infos) }}>
+              </div>
             </div>
           ))}
         </div>
 
       </div>
 
-      <div id = "InputTextField">
-      
-        <div className = {edits.formTextField} id = "TitleInputTextField">
-          <form onSubmit = {handleSubmitTitle} className = {edits.inputContainerEdit}> 
-            <TextField  
+      <div id="InputTextField">
+
+        <div className={edits.formTextField} id="TitleInputTextField">
+          <form onSubmit={handleSubmitTitle} className={edits.inputContainerEdit}>
+            <TextField
               fullWidth
-              variant = 'outlined' 
-              id = 'InputField' 
-              label = 'Header' 
-              style = {{backgroundColor: '#dfe9f0'}}
-              onChange = {(e) => {setTitlename(e.target.value)}} 
-              className = {edits.inputTextEdit}
-            /> <br/>
-            <TextField 
-              fullWidth 
-              variant = 'outlined' 
-              id = 'InputField' 
-              label = 'Sub-Title' 
-              style = {{backgroundColor: '#dfe9f0'}}
-              onChange = {(e) => {setSubtitle(e.target.value)}} 
-              className = {edits.inputTextEdit}
-            /> <br/>
-            <Button 
-              type = 'submit' 
-              variant = 'contained' 
-              color = 'secondary' 
-              className = {edits.inputTextEdit}
-            >Submit</Button> 
+              variant='outlined'
+              id='InputField'
+              label='Header'
+              style={{ backgroundColor: '#dfe9f0' }}
+              onChange={(e) => { setTitlename(e.target.value) }}
+              className={edits.inputTextEdit}
+            /> <br />
+            <TextField
+              fullWidth
+              variant='outlined'
+              id='InputField'
+              label='Sub-Title'
+              style={{ backgroundColor: '#dfe9f0' }}
+              onChange={(e) => { setSubtitle(e.target.value) }}
+              className={edits.inputTextEdit}
+            /> <br />
+            <Button
+              type='submit'
+              variant='contained'
+              color='secondary'
+              className={edits.inputTextEdit}
+            >Submit</Button>
           </form>
         </div>
-      
-        <div className = {edits.formTextField} id = "AuthorInputTextField">
-          <form onSubmit = {handleSubmitAuthor} className = {edits.inputContainerEdit}> 
-            <TextField 
+
+        <div className={edits.formTextField} id="AuthorInputTextField">
+          <form onSubmit={handleSubmitAuthor} className={edits.inputContainerEdit}>
+            <TextField
               fullWidth
-              variant = 'outlined' 
-              id = 'InputField' 
-              label = 'Name' 
-              style = {{backgroundColor: '#dfe9f0'}}
-              value = {authorName}
-              onChange = {(e) => {setAuthorName(e.target.value);}} 
-              className = {edits.inputTextEdit}
-            /> <br/>
-            <TextField 
+              variant='outlined'
+              id='InputField'
+              label='Name'
+              style={{ backgroundColor: '#dfe9f0' }}
+              value={authorName}
+              onChange={(e) => { setAuthorName(e.target.value); }}
+              className={edits.inputTextEdit}
+            /> <br />
+            <TextField
               fullWidth
-              variant = 'outlined' 
-              id = 'InputField' 
-              label = 'Email' 
-              style = {{backgroundColor: '#dfe9f0'}}
-              value = {authorEmail}
-              onChange = {(e) => {setAuthorEmail(e.target.value);}} 
-              className = {edits.inputTextEdit}
-            /> <br/>
-            <TextField  
+              variant='outlined'
+              id='InputField'
+              label='Email'
+              style={{ backgroundColor: '#dfe9f0' }}
+              value={authorEmail}
+              onChange={(e) => { setAuthorEmail(e.target.value); }}
+              className={edits.inputTextEdit}
+            /> <br />
+            <TextField
               fullWidth
-              variant = 'outlined' 
-              id = 'InputField' 
-              label = 'College' 
-              style = {{backgroundColor: '#dfe9f0'}}
-              value = {authorCollege}
-              onChange = {(e) => {setAuthorCollege(e.target.value);}} 
-              className = {edits.inputTextEdit}
-            /> <br/>
-            <Button 
-              type = 'submit' 
-              variant = 'contained' 
-              color = 'secondary' 
-              className = {edits.inputTextEdit}
-            >Submit</Button> 
+              variant='outlined'
+              id='InputField'
+              label='College'
+              style={{ backgroundColor: '#dfe9f0' }}
+              value={authorCollege}
+              onChange={(e) => { setAuthorCollege(e.target.value); }}
+              className={edits.inputTextEdit}
+            /> <br />
+            <Button
+              type='submit'
+              variant='contained'
+              color='secondary'
+              className={edits.inputTextEdit}
+            >Submit</Button>
           </form>
         </div>
-      
-        <div className = {edits.formTextField} id = "ContentInputTextField">
-          <form onSubmit = {handleSubmitContent} className = {edits.inputContainerEdit}> 
-            <TextField 
+
+        <div className={edits.formTextField} id="ContentInputTextField">
+          <form onSubmit={handleSubmitContent} className={edits.inputContainerEdit}>
+            <TextField
               fullWidth
-              variant = 'outlined' 
-              id = 'InputField' 
-              label = 'Content Header'
-              style = {{backgroundColor: '#dfe9f0'}} 
-              value = {contentHeader}
-              onChange = {(e) => {setContentHeader(e.target.value);}}  
-              className = {edits.inputTextEdit}
-            /> <br/>
-            <Editor 
-              renderHTML = {text => mdParser.render(text)}
-              plugins = {plugins}
-              id = 'InputField'
-              style = {{backgroundColor: '#dfe9f0'}} 
-              value = {contentInfo}
-              onChange = {(e) => {setContentInfo(e.text.toString());}}
-              className = {edits.inputTextEdit}
-            /> <br/>
-            {/* <TextField 
-              multiline 
-              fullWidth
-              variant = 'outlined' 
-              id = 'InputField' 
-              label = 'Content Body'
-              style = {{backgroundColor: '#dfe9f0'}} 
-              value = {contentInfo}
-              onChange = {(e) => {
-                setInfo(e.target.value);
-                setContentInfo(e.target.value);
-                }
-              } 
-              className = {edits.inputTextEdit}
-            />*/}
-            <Button 
-              type = 'submit' 
-              variant = 'contained' 
-              color = 'secondary' 
-              className = {edits.inputTextEdit}
+              variant='outlined'
+              id='InputField'
+              label='Content Header'
+              style={{ backgroundColor: '#dfe9f0' }}
+              value={contentHeader}
+              onChange={(e) => { setContentHeader(e.target.value); }}
+              className={edits.inputTextEdit}
+            /> <br />
+            <Editor
+              renderHTML={text => mdParser.render(text)}
+              plugins={plugins}
+              config='commonmark'
+              id='InputField'
+              style={{ backgroundColor: '#dfe9f0' }}
+              value={contentInfo}
+              onChange={(e) => { setContentInfo(e.text.toString()); }}
+              className={edits.inputTextEdit}
+            /> <br />
+            <Button
+              type='submit'
+              variant='contained'
+              color='secondary'
+              className={edits.inputTextEdit}
             >Submit</Button>
           </form>
         </div>
@@ -529,8 +519,8 @@ export default function Home() {
 
       <div>
         <Dialog
-          open = {openAuthor}
-          onClose = {handleCloseCancelAuthor}
+          open={openAuthor}
+          onClose={handleCloseCancelAuthor}
           aria-labelledby="responsive-dialog-title"
         >
           <DialogTitle id="responsive-dialog-title">
@@ -538,17 +528,17 @@ export default function Home() {
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Do you want to remove the Author or proceed to edit? 
+              Do you want to remove the Author or proceed to edit?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick= {() => {handleCloseEditAuthor()}}>
+            <Button autoFocus onClick={() => { handleCloseEditAuthor() }}>
               Edit
             </Button>
-            <Button onClick = {() => {handleCloseRemoveAuthor()}} autoFocus>
+            <Button onClick={() => { handleCloseRemoveAuthor() }} autoFocus>
               Remove
             </Button>
-            <Button onClick = {() => {handleCloseCancelAuthor()}} autoFocus>
+            <Button onClick={() => { handleCloseCancelAuthor() }} autoFocus>
               Cancel
             </Button>
           </DialogActions>
@@ -557,8 +547,8 @@ export default function Home() {
 
       <div>
         <Dialog
-          open = {openContent}
-          onClose = {handleCloseCancelContent}
+          open={openContent}
+          onClose={handleCloseCancelContent}
           aria-labelledby="responsive-dialog-title"
         >
           <DialogTitle id="responsive-dialog-title">
@@ -566,17 +556,17 @@ export default function Home() {
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Do you want to remove the Content or proceed to edit? 
+              Do you want to remove the Content or proceed to edit?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick= {() => {handleCloseEditContent()}}>
+            <Button autoFocus onClick={() => { handleCloseEditContent() }}>
               Edit
             </Button>
-            <Button onClick = {() => {handleCloseRemoveContent()}} autoFocus>
+            <Button onClick={() => { handleCloseRemoveContent() }} autoFocus>
               Remove
             </Button>
-            <Button onClick = {() => {handleCloseCancelContent()}} autoFocus>
+            <Button onClick={() => { handleCloseCancelContent() }} autoFocus>
               Cancel
             </Button>
           </DialogActions>

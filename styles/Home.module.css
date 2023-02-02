@@ -30,8 +30,8 @@
   width: 50vw;
   border-radius: 0.5%;
   background-color: #ffffff;
-  
-  border : 1px solid black;
+
+  border: 1px solid black;
 }
 
 .titlebarContainerEdit {
@@ -249,6 +249,6 @@
 
 .formTextField {
   margin: auto;
-  width : 60%;
+  width: 60%;
   display: none;
 }
