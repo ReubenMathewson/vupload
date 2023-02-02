@@ -34,7 +34,8 @@ const plugins = [
   'list-ordered',
   'block-code-block',
   'link', 
-  'image', 
+  'image',
+  // 'table',
   'logger'
 ];
 
@@ -339,6 +340,7 @@ export default function Home() {
         behavior: 'smooth'
       });
 
+      handleBadgeVisibility();
       setContentAdderText('Add Content');
     }
   }
