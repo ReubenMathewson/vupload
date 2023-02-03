@@ -1,8 +1,5 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Inter } from '@next/font/google'
 import edits from '@/styles/Home.module.css'
+import previews from '@/styles/Preview.module.css'
 
 import * as React from 'react';
 import { useState,useEffect } from 'react';
@@ -20,11 +17,10 @@ import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import Editor, { Plugins } from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
+import useLocalStorage from "use-local-storage";
 import DOMPurify from 'dompurify'
 
 
-const inter = Inter({ subsets: ['latin'] })
-export const mdParser = new MarkdownIt();
 const plugins = [
   'font-bold',
   'font-italic',
@@ -39,18 +35,20 @@ const plugins = [
   'logger'
 ];
 
-interface titleInformation {
+export const mdParser = new MarkdownIt();
+
+export interface titleInformation {
   titlenames: string,
   subtitles: string,
 };
 
-interface authorInformation {
+export interface authorInformation {
   names: string,
   emails: string,
   colleges: string
 };
 
-interface contentInformation {
+export interface contentInformation {
   headers: string,
   infos: string,
 };
@@ -87,45 +85,11 @@ export default function Home() {
     setDisplayType(!displayType);
   };
 
-  const [preview,setPreview] = useState(false)
-  const previewMode = () => {
-    setPreview(!preview);
-    if(preview){
-      document.getElementById("AddAuthor")!.style.display = "none";
-      document.getElementById("ContentBoxAdd")!.style.display = "none";
-
-      document.getElementById("TitleInputTextField")!.style.display = "none";
-      document.getElementById("AuthorInputTextField")!.style.display = "none";
-      document.getElementById("ContentInputTextField")!.style.display = "none";
-
-      document.getElementById("TitleBar")!.style.pointerEvents = "none";
-      document.getElementById("AuthorContainer")!.style.pointerEvents = "none";
-      document.getElementById("ContentContainer")!.style.pointerEvents = "none";
-      document.getElementById("SwitchSetter")!.style.pointerEvents = "none";
-
-      setDisplayType(true);
-      handleBadgeVisibility();
-
-      resetAuthor();
-      resetContent();
-    } else {
-      if(authors.length < 3) {document.getElementById("AddAuthor")!.style.display = "block";}
-      document.getElementById("ContentBoxAdd")!.style.display = "block";
-
-      document.getElementById("TitleBar")!.style.pointerEvents = "all";
-      document.getElementById("AuthorContainer")!.style.pointerEvents = "all";
-      document.getElementById("ContentContainer")!.style.pointerEvents = "all";
-      document.getElementById("SwitchSetter")!.style.pointerEvents = "all";
-
-      document.getElementById("PreviewButton")!.style.backgroundColor = "#a84593";
-    }
-  }
-
   // TitleBar Elements
   const [titlename, setTitlename] = useState('Title Placeholder');
   const [subtitle, setSubtitle] = useState('Subtitle Placeholder');
 
-  const [titlebar, setTitlebar] = useState<titleInformation>({ titlenames: titlename, subtitles: subtitle });
+  const [titlebar, setTitlebar] = useLocalStorage<titleInformation>('titlebarStorage',{ titlenames: titlename, subtitles: subtitle });
   function updateTitlebar() {
     setTitlebar({ titlenames: titlename, subtitles: subtitle });
   }
@@ -176,10 +140,10 @@ export default function Home() {
   const [authorClick, setAuthorClick] = useState(0);
   const [authorAdderText, setAuthorAdderText] = useState('Add Author');
 
-  const [authors, setAuthors] = useState<authorInformation[]>([]); //Authors are stored in reverse order in list
+  const [authors, setAuthors] = useLocalStorage<authorInformation[]>('authorsStorage',[]); //Authors are stored in reverse order in list
   const authorLister = (author: authorInformation, i: number = authorClick) => {
     authors.splice(i, 0, author);
-    setAuthors(authors);
+    setAuthors([...authors]);
   }
 
   const addAuthor = () => {
@@ -300,10 +264,17 @@ export default function Home() {
   var [contentClick, setContentClick] = useState(0);
   const [contentAdderText, setContentAdderText] = useState('Add Content');
 
-  const [contents, setContents] = useState<contentInformation[]>([]); //Contents are stored in reverse order in list
+  const [contents, setContents] = useLocalStorage<contentInformation[]>('contentsStorage',[]); //Contents are stored in reverse order in list
+  useEffect(() => {
+    const importModule = async () => {
+        //import module on the client-side to get `createEmptyValue` instead of a component
+        setContents(contents)
+    };
+    importModule();
+}, []);
   const contentLister = (content: contentInformation, i: number = contentClick) => {
     contents.splice(i, 0, content);
-    setContents(contents);
+    setContents([...contents]);
   }
 
   const addContent = () => {
@@ -411,15 +382,30 @@ export default function Home() {
       <div className={edits.relativeFixed} title={(displayType) ? "Script Display" : "Block Display"} id = "ModeSetter">
         <Switch checked={displayType} onChange={handleBadgeVisibility} title="Change Display Type" style={{ margin: "auto" }} 
         id = "SwitchSetter"/>
+          <a href = "./previewTemplate">
+            <Button
+              type='submit'
+              variant='contained'
+              color='secondary'
+              title="Goto Viewpage"
+              style={{ margin: "auto", marginBottom: '1px' }}
+              id = "PreviewButton"
+              onClick = {() => {}}
+            >Preview</Button>
+          </a>
           <Button
-            type='submit'
-            variant='contained'
-            color='secondary'
-            title="Enter Preview"
-            style={{ margin: "auto", marginBottom: '1px' }}
-            id = "PreviewButton"
-            onClick = {() => {previewMode()}}
-          >Preview</Button>
+              type='submit'
+              variant='contained'
+              color='secondary'
+              title="Clear"
+              style={{ margin: "auto", marginBottom: '1px' }}
+              id = "Clearer"
+              onClick = {() => {
+                setTitlebar({titlenames:'Title Placeholder',subtitles:'Sub-Title Placeholder'})
+                setAuthors([]);
+                setContents([]);
+              }}
+            >Clear</Button>
       </div>
 
       <div className={edits.paperEdit} id="EditPaper">
@@ -460,7 +446,9 @@ export default function Home() {
             </div>
           </div>
 
-          {contents.map((content, idx) => (
+          {contents.length>0 && (
+            <>
+            {contents.map((content, idx) => (
             <div className={edits.contentBoxEdit} key={idx.toString()} id={idx + "c"} title="Edit Content"
               onClick={() => { contentBufferClickers(content, idx) }}
             >
@@ -469,6 +457,8 @@ export default function Home() {
               </div>
             </div>
           ))}
+            </>
+          )}
         </div>
 
       </div>
