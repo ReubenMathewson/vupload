@@ -5,4 +5,11 @@ import * as view from './previewTemplate'
 
 import * as React from 'react';
 import useLocalStorage from 'use-local-storage'
-import { useEffect } from 'react'
+import { useEffect } from 'react' 
+
+export default function Pageview(){
+    return (
+        <>
+        </>
+    );
+}
