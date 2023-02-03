@@ -392,7 +392,7 @@ export default function Home() {
       <div className={edits.relativeFixed} title={(displayType) ? "Script Display" : "Block Display"} id = "ModeSetter">
         <Switch checked={displayType} onChange={handleBadgeVisibility} title="Change Display Type" style={{ margin: "auto" }} 
         id = "SwitchSetter"/>
-          <a href = "./previewTemplate">
+          <a href = "./previewPDF">
             <Button
               type='submit'
               variant='contained'

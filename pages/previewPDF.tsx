@@ -1,36 +1,47 @@
 import { useRef } from 'react';
-// import jsPDF from 'jspdf';
+import jsPDF from 'jspdf';
 import TemplatePage from './previewTemplate'
 
-// function App() {
-// 	const reportTemplateRef = useRef(null);
+const margins = {
+	top: 40,
+	bottom: 60,
+	left: 40,
+	width: 522
+};
 
-// 	const handleGeneratePdf = () => {
-// 		const doc = new jsPDF({
-// 			format: 'a4',
-// 			unit: 'px',
-// 		});
+function App() {
+	const templatePageRef = useRef(null);
 
-// 		// Adding the fonts.
-// 		doc.setFont('Inter-Regular', 'normal');
+	const handleGeneratePdf = () => {
+		const doc = new jsPDF({
+			orientation: "p",
+			format: 'a4',
+			unit: 'px',
+			hotfixes: ["px_scaling"],
+			floatPrecision: "smart",
+		});
 
-// 		doc.html(reportTemplateRef.current, {
-// 			async callback(doc) {
-// 				await doc.save('document');
-// 			},
-// 		});
-// 	};
 
-// 	return (
-// 		<div>
-// 			<button className="button" onClick={handleGeneratePdf}>
-// 				Generate PDF
-// 			</button>
-// 			<div ref={reportTemplateRef}>
-// 				<ReportTemplate />
-// 			</div>
-// 		</div>
-// 	);
-// }
+		// Adding the fonts.
+		doc.setFont('Inter-Regular', 'normal');
 
-// export default App;
+		doc.html(templatePageRef.current ?? '', {
+			async callback(doc) {
+				await doc.save('document');
+			},
+		});
+	};
+
+	return (
+		<div>
+			<button className="button" onClick={handleGeneratePdf}>
+				Generate PDF
+			</button>
+			<div ref = { templatePageRef }>
+				<TemplatePage />
+			</div>
+		</div>
+	);
+}
+
+export default App;

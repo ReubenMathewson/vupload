@@ -1,9 +1,6 @@
 .paperPreview {
-    margin: auto;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
-    min-height: calc(50vw * 29.7 / 21);
-    width: 50vw;
+    min-height: 3508px;
+    width: 21cm;
     border-radius: 0.5%;
     background-color: #ffffff;
   
