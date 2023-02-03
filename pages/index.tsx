@@ -1,3 +1,7 @@
+import Head from 'next/head'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Inter } from '@next/font/google'
 import edits from '@/styles/Home.module.css'
 import previews from '@/styles/Preview.module.css'
 
@@ -21,6 +25,8 @@ import useLocalStorage from "use-local-storage";
 import DOMPurify from 'dompurify'
 
 
+const inter = Inter({ subsets: ['latin'] })
+export const mdParser = new MarkdownIt();
 const plugins = [
   'font-bold',
   'font-italic',
@@ -34,8 +40,6 @@ const plugins = [
   'table',
   'logger'
 ];
-
-export const mdParser = new MarkdownIt();
 
 export interface titleInformation {
   titlenames: string,
@@ -137,6 +141,12 @@ export default function Home() {
   const [authorEmail, setAuthorEmail] = useState('');
   const [authorCollege, setAuthorCollege] = useState('');
 
+  useEffect(() => {
+    setName(authorName);
+    setEmail(authorEmail);
+    setCollege(authorCollege);
+  },[authorName,authorEmail,authorCollege]); 
+
   const [authorClick, setAuthorClick] = useState(0);
   const [authorAdderText, setAuthorAdderText] = useState('Add Author');
 
@@ -227,7 +237,9 @@ export default function Home() {
 
   const handleSubmitAuthor = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setName(authorName);
+    console.log(authorName)
+    setName(authorName)
+    console.log(name)
     setEmail(authorEmail);
     setCollege(authorCollege);
     if (name && email && college) {
@@ -261,17 +273,15 @@ export default function Home() {
   const [contentHeader, setContentHeader] = useState('');
   const [contentInfo, setContentInfo] = useState('');
 
+  useEffect(() => {
+    setHeader(contentHeader);
+    setInfo(contentInfo);
+  },[contentHeader,contentInfo]);
+
   var [contentClick, setContentClick] = useState(0);
   const [contentAdderText, setContentAdderText] = useState('Add Content');
 
   const [contents, setContents] = useLocalStorage<contentInformation[]>('contentsStorage',[]); //Contents are stored in reverse order in list
-  useEffect(() => {
-    const importModule = async () => {
-        //import module on the client-side to get `createEmptyValue` instead of a component
-        setContents(contents)
-    };
-    importModule();
-}, []);
   const contentLister = (content: contentInformation, i: number = contentClick) => {
     contents.splice(i, 0, content);
     setContents([...contents]);
@@ -399,13 +409,13 @@ export default function Home() {
               color='secondary'
               title="Clear"
               style={{ margin: "auto", marginBottom: '1px' }}
-              id = "Clearer"
+              id = "ClearView"
               onClick = {() => {
-                setTitlebar({titlenames:'Title Placeholder',subtitles:'Sub-Title Placeholder'})
-                setAuthors([]);
-                setContents([]);
+                setTitlebar({titlenames: 'Titlename', subtitles: 'Subtitles'});
+                resetAuthor();
+                resetContent();
               }}
-            >Clear</Button>
+            >Close</Button>
       </div>
 
       <div className={edits.paperEdit} id="EditPaper">
@@ -446,9 +456,7 @@ export default function Home() {
             </div>
           </div>
 
-          {contents.length>0 && (
-            <>
-            {contents.map((content, idx) => (
+          {contents.map((content, idx) => (
             <div className={edits.contentBoxEdit} key={idx.toString()} id={idx + "c"} title="Edit Content"
               onClick={() => { contentBufferClickers(content, idx) }}
             >
@@ -457,8 +465,6 @@ export default function Home() {
               </div>
             </div>
           ))}
-            </>
-          )}
         </div>
 
       </div>
