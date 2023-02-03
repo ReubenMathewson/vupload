@@ -1,13 +1,7 @@
 import { useRef } from 'react';
 import jsPDF from 'jspdf';
+import previews from '@/styles/Preview.module.css'
 import TemplatePage from './previewTemplate'
-
-const margins = {
-	top: 40,
-	bottom: 60,
-	left: 40,
-	width: 522
-};
 
 function App() {
 	const templatePageRef = useRef(null);
@@ -29,6 +23,8 @@ function App() {
 			async callback(doc) {
 				await doc.save('document');
 			},
+			autoPaging: true,
+			margin: 40,
 		});
 	};
 
@@ -37,8 +33,10 @@ function App() {
 			<button className="button" onClick={handleGeneratePdf}>
 				Generate PDF
 			</button>
-			<div ref = { templatePageRef }>
-				<TemplatePage />
+			<div className={previews.paperEdit} style = {{margin: "calc(50% - 21cm/2)", marginTop: "5vh"}}>
+				<div ref = { templatePageRef }>
+					<TemplatePage />
+				</div>
 			</div>
 		</div>
 	);

@@ -1,6 +1,6 @@
 .paperPreview {
     min-height: 3508px;
-    width: 21cm;
+    width: calc(21cm - 80px);
     border-radius: 0.5%;
     background-color: #ffffff;
   
@@ -21,7 +21,7 @@
 
 .titlePreview {
     margin: auto;
-    margin-top: 2vh;
+    margin-top: 0.5vh;
     min-height: calc(1em + 10px);
     max-height: calc(2em + 10 px);
     width: 92%;
@@ -35,7 +35,7 @@
 
 .subtitlePreview {
     margin: auto;
-    margin-top: 5vh;
+    margin-top: 1vh;
     min-height: calc(1em + 10px);
     max-height: calc(2em + 10 px);
     width: 92%;
@@ -65,7 +65,6 @@
     max-height: 90%;
     min-width: 20%;
     max-width: 33%;
-    padding-top: 2em;
     font-family: 'Times New Roman', Times, serif;
     font-size: 16px;
     text-align: center;
@@ -79,8 +78,8 @@
     display: flex;
     flex-direction: column-reverse;
     margin: auto;
-    margin-top: 2vh;
-    margin-bottom: 2vh;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
     min-height: calc((50vw * 29.7 / 21) - (2em + 10 px) - (8.5vw) - (5vh + 2vh + 2vh + 2vh));
     width: 96%;
     border-radius: 2%;
@@ -92,9 +91,6 @@
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 1vh;
-    margin-bottom: 0vh;
-    padding-bottom: 1vh;
     width: 94%;
     min-height: 100px;
     border-radius: 2%;
@@ -117,14 +113,11 @@
 
 .contentBodyPreview {
     margin: auto;
-    margin-top: 1vh;
-    margin-bottom: 0vh;
     width: 98%;
     min-height: 36px;
     font-family: 'Times New Roman', Times, serif;
     font-size: 16px;
     text-align: justify;
-    padding: 1em 1em 1em 1em;
     overflow: hidden;
     border-radius: 2%;
 
