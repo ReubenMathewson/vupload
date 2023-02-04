@@ -40,6 +40,7 @@ const plugins = [
   'table',
   'logger'
 ];
+Editor.use(Plugins.AutoResize,{min: 100, max: 1000});
 
 export interface titleInformation {
   titlenames: string,
