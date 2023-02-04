@@ -414,8 +414,8 @@ export default function Home() {
               id = "ClearView"
               onClick = {() => {
                 setTitlebar({titlenames: 'Titlename', subtitles: 'Subtitles'});
-                resetAuthor();
-                resetContent();
+                setAuthors([]);
+                setContents([]);
               }}
             >Close</Button>
       </div>
