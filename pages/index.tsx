@@ -417,7 +417,7 @@ export default function Home() {
                 setAuthors([]);
                 setContents([]);
               }}
-            >Close</Button>
+            >Clear</Button>
       </div>
 
       <div className={edits.paperEdit} id="EditPaper">
