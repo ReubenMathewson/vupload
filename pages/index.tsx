@@ -79,7 +79,7 @@ export default function Home() {
     while (i < contents.length) {
       if (document.getElementById(i + "cb")) {
         document.getElementById(i + "cb")!.style.maxHeight = "calc(12.5em + 3px)";
-        document.getElementById(i + "cb")!.style.overflow = "auto";
+        document.getElementById(i + "cb")!.style.overflow = "hidden";
         i += 1;
       }
       else { break; }
