@@ -40,7 +40,7 @@ const plugins = [
   'table',
   'logger'
 ];
-Editor.use(Plugins.AutoResize,{min: 100, max: 1000});
+
 
 export interface titleInformation {
   titlenames: string,
@@ -559,7 +559,7 @@ export default function Home() {
               plugins={plugins}
               config='commonmark'
               id='InputField'
-              style={{ backgroundColor: '#dfe9f0' }}
+              style={{ backgroundColor: '#dfe9f0', width: "100%" }}
               value={contentInfo}
               onChange={(e) => { setContentInfo(e.text.toString()); }}
               className={edits.inputTextEdit}
