@@ -61,35 +61,35 @@ export interface contentInformation {
 export default function Home() {
 
   // Display Modes
-  const [displayType, setDisplayType] = useState(false);
+  // const [displayType, setDisplayType] = useState(false);
 
-  const blockMode = () => {
-    var i: number = 0;
-    while (i < contents.length) {
-      if (document.getElementById(i + "cb")) {
-        document.getElementById(i + "cb")!.style.maxHeight = "fit-content";
-        i += 1;
-      }
-      else { break; }
-    }
-  }
+  // const blockMode = () => {
+  //   var i: number = 0;
+  //   while (i < contents.length) {
+  //     if (document.getElementById(i + "cb")) {
+  //       document.getElementById(i + "cb")!.style.maxHeight = "fit-content";
+  //       i += 1;
+  //     }
+  //     else { break; }
+  //   }
+  // }
 
-  const scriptMode = () => {
-    var i: number = 0;
-    while (i < contents.length) {
-      if (document.getElementById(i + "cb")) {
-        document.getElementById(i + "cb")!.style.maxHeight = "calc(12.5em + 3px)";
-        document.getElementById(i + "cb")!.style.overflow = "hidden";
-        i += 1;
-      }
-      else { break; }
-    }
-  }
+  // const scriptMode = () => {
+  //   var i: number = 0;
+  //   while (i < contents.length) {
+  //     if (document.getElementById(i + "cb")) {
+  //       document.getElementById(i + "cb")!.style.maxHeight = "calc(12.5em + 3px)";
+  //       document.getElementById(i + "cb")!.style.overflow = "hidden";
+  //       i += 1;
+  //     }
+  //     else { break; }
+  //   }
+  // }
 
-  const handleBadgeVisibility = () => {
-    (displayType) ? scriptMode() : blockMode();
-    setDisplayType(!displayType);
-  };
+  // const handleBadgeVisibility = () => {
+  //   (displayType) ? scriptMode() : blockMode();
+  //   setDisplayType(!displayType);
+  // };
 
   // TitleBar Elements
   const [titlename, setTitlename] = useState('Title Placeholder');
@@ -391,9 +391,9 @@ export default function Home() {
 
   return (
     <>
-      <div className={edits.relativeFixed} title={(displayType) ? "Script Display" : "Block Display"} id = "ModeSetter">
-        <Switch checked={displayType} onChange={handleBadgeVisibility} title="Change Display Type" style={{ margin: "auto" }} 
-        id = "SwitchSetter"/>
+      <div className={edits.relativeFixed} id = "ModeSetter">
+        {/* <Switch checked={displayType} onChange={handleBadgeVisibility} title="Change Display Type" style={{ margin: "auto" }} 
+        id = "SwitchSetter"/> */}
           <a href = "./previewPDF">
             <Button
               type='submit'
@@ -403,8 +403,8 @@ export default function Home() {
               style={{ margin: "auto", marginBottom: '1px' }}
               id = "PreviewButton"
               onClick = {() => {}}
-            >Preview</Button>
-          </a>
+              >Preview</Button>
+          </a> 
           <Button
               type='submit'
               variant='contained'
