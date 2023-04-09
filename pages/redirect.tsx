@@ -25,9 +25,9 @@ function Preview(){
     const [contentUsage,setContentUsage] = useLocalStorage<string>("contentDelivery","");
 
     var index: number = 700;
-    var increment0: number = 1200;
-    var increment1: number = 900;
-    var increment2: number = 650;
+    var increment0: number = 950;
+    var increment1: number = 700;
+    var increment2: number = 550;
     var buffer: string = "";
 
     var arrNode: any = [];
