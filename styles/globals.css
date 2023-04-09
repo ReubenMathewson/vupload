@@ -9,7 +9,12 @@ html,body {
   overflow-x: hidden;
 }
 
-body {
+/* body {
   background-color: #bdd4d6;
   color: rgb(var(--foreground-rgb));
+} */
+
+body {
+  background-color: #0f102b;
+  background-image: url("bgimg2.png");
 }

@@ -11,6 +11,9 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@mantine/core": "^5.10.5",
+    "@mantine/hooks": "^5.10.5",
+    "@mantine/rte": "^5.10.5",
     "@mui/material": "^5.11.7",
     "@next/font": "13.1.6",
     "@pdftron/webviewer": "^8.11.0",
@@ -22,6 +25,7 @@
     "eslint-config-next": "13.1.6",
     "html-pdf": "^3.0.1",
     "html-pdf-node": "^1.0.8",
+    "html2canvas": "^1.4.1",
     "isomorphic-dompurify": "^0.26.0",
     "jspdf": "^2.5.1",
     "markdown-it": "^13.0.1",

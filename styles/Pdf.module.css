@@ -1,0 +1,153 @@
+.relative {
+    margin: auto;
+    margin-top: 2.5cm;
+    margin-left: 92%;
+    width: 6%;
+    height: 5cm;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+
+    border-radius: 1%;
+    /* border: 1px solid purple; */
+}
+
+.page {
+    position: relative;
+    margin-top: 0cm;
+    margin-left: 0cm;
+    width: 21cm;
+    min-height: 29.7cm;
+
+    background-color: #ffffff;
+}
+
+.page #header {
+    margin-left: 2.5cm;
+    padding-bottom: 1cm;
+    font-size: 0.5cm;
+    font-family: 'Times New Roman', Times, serif;
+
+    border-radius: 0.5em;
+    /* border: 1px solid red; */
+}
+
+.page #footer {
+    margin-bottom: calc(0.75cm);
+    margin-left: 2.5cm;
+    font-size: 0.5cm;
+    font-family: 'Times New Roman', Times, serif;
+
+    border-radius: 0.5em;
+    /* border: 1px solid red; */
+}
+
+.titlebar {
+    width: 90%;
+    min-height: 1.5em;
+    max-height: 2.5em;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    font-size: 1.5cm;
+    font-family: 'Times New Roman', Times, serif;
+
+    border-radius: 0.5em;
+    /* border: 1px solid red; */
+}
+
+.title {
+    margin: auto;
+    width: 90%;
+    min-height: 1em;
+    max-height: 2em;
+    text-align: center;
+    color: #000000;
+
+    border-radius: 0.5em;
+    /* border: 1px solid green; */
+}
+
+.author {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 0.5cm;
+    width: 90%;
+    min-height: 7em;
+    max-height: 10em;
+    padding: 1em 3% 1em 3%;
+    font-size: 0.5cm;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    color: #000000;
+
+    border-radius: 1%;
+    /* border: 1px solid red; */
+}
+
+.authorData {
+    margin: auto;
+    width: 28%;
+    min-height: 5em;
+    max-height: 8em;
+    word-wrap: break-word;
+
+    border-radius: 10%;
+    /* border: 1px solid green; */
+}
+
+.content {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    margin-top: 0.5cm;
+    width: 90%;
+
+    border-radius: 1%;
+    /* border: 1px solid red; */
+}
+
+.contentData {
+    margin: auto;
+    margin-bottom: 0.5cm;
+    width: 95%;
+    padding-top: 0.5cm;
+    padding-bottom: 0.5cm;
+
+    border-radius: 1%;
+    /* border: 1px solid green; */
+}
+
+.heading {
+    margin: auto;
+    margin-bottom: 0.05cm;
+    width: 98%;
+    min-height: 1em;
+    max-height: 2em;
+    padding-left: 1ch;
+    font-size: 0.95cm;
+    font-family: 'Times New Roman', Times, serif;
+    word-wrap: break-word;
+    color: #000000;
+
+    border-radius: 0.5em;
+    /* border: 1px solid yellow; */
+}
+
+.matter {
+    margin: auto;
+    margin-top: 0.25cm;
+    width: 98%;
+    min-height: 1em;
+    max-height: max-content;
+    padding-top: 0.5em;
+    padding-left: 1ch;
+    font-size: 0.9cm;
+    font-family: 'Times New Roman', Times, serif;
+    word-wrap: break-word;
+    color: #000000;
+    text-align: justify;
+    font-style: normal;
+
+    border-radius: 0.5em;
+    /* border: 1px solid yellow; */
+}
