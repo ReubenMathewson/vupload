@@ -378,14 +378,14 @@ function Preview(){
 
                 <div className = {pdf.page}>
 
-                    <div style = {{position: "absolute", left: "2.5cm"}} id = "header">
+                    <div style = {{position: "absolute", left: "43%"}} id = "header">
                         { header }
                     </div>
     
                     {loadData(num)} 
                     
-                    <div style = {{position: "absolute", bottom: "0.25cm", left: "2.5cm"}} id = "footer">
-                        { footer }
+                    <div style = {{position: "absolute", bottom: "0.25cm", left: "38%"}} id = "footer">
+                        { footer + " Page No: " + 1}
                     </div>       
                     
                 </div> 
@@ -430,7 +430,7 @@ function Preview(){
 
                             <div className = {pdf.page}>
 
-                                <div id = "header" style = {{position: "absolute", left: "2.5cm"}} >
+                                <div id = "header" style = {{position: "absolute", left: "43%"}} >
                                     { header }
                                 </div>
                             
@@ -441,8 +441,9 @@ function Preview(){
 
                                 </div>
 
-                                <div style = {{position: "absolute", bottom: "0.25cm", left: "2.5cm"}} id = "footer">
-                                    { footer }
+                                <div style = {{position: "absolute", bottom: "0.25cm", left: "38%"}} id = "footer">
+                                    
+                                    { footer + " Page No: " + (idx + 2)}
                                 </div>
 
                             </div> 
