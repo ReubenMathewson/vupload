@@ -428,7 +428,7 @@ function Preview(){
                     {
                         arrNode.map((divisions: any,idx: any) => (
 
-                            <div className = {pdf.page}>
+                            <div className = {pdf.page} key = {idx.toString()}>
 
                                 <div id = "header" style = {{position: "absolute", left: "43%"}} >
                                     { header }
