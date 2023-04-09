@@ -24,7 +24,7 @@ function Preview(){
     const [contentWarehouse,setContentWarehouse] = useLocalStorage<string[]>('contentManager',[]);
     const [contentUsage,setContentUsage] = useLocalStorage<string>("contentDelivery","");
 
-    var index: number = 425;
+    var index: number = 700;
     var increment0: number = 1200;
     var increment1: number = 900;
     var increment2: number = 650;
