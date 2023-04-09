@@ -411,7 +411,7 @@ function Preview(){
 
                 <Button variant = "contained" style = {{backgroundColor: '#0ff5e3', color: '#23243d'}} onClick = { handleGeneratePdf }>
                         Generate
-                </Button>
+                </Button><br/>
 
                 <a href = './finalUI'>
                     <Button variant = "contained" style = {{backgroundColor: '#0ff5e3', color: '#23243d'}}>
