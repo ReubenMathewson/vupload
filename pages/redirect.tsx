@@ -413,6 +413,12 @@ function Preview(){
                         Generate
                 </Button>
 
+                <a href = './finalUI'>
+                    <Button variant = "contained" style = {{backgroundColor: '#0ff5e3', color: '#23243d'}}>
+                            Back
+                    </Button>
+                </a>
+
             </div>
 
             <div style = {{marginLeft: "calc(50% - 21cm/2)"}}>
