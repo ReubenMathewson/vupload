@@ -33,7 +33,7 @@ function Preview(){
     const [increment1buffer,setIncrement1Buffer] = useState(increment1);
     const [increment2buffer,setIncrement2Buffer] = useState(increment2);
 
-    var index: number = 1600;
+    var index: number = 1610;
     var buffer: string = "";
 
     var arrNode: any = [];
@@ -87,23 +87,43 @@ function Preview(){
                 buffer += (text.substring(0,text.length - 1));
                 // console.log("test6" + buffer);
             } else {
+                var bo = /<b>.*/g;
                 var im = /<img.*/g;
+                var boldIndex = text.lastIndexOf("\u003cb\u003E");
+                var bolfIndex = text.lastIndexOf("\u003c\\b\u003E");
                 var imgIndex = text.lastIndexOf("\u003Cimg");
                 var clsIndex = text.lastIndexOf("\u003E");
-                if(text.match(im)){
-                    if(clsIndex){
-                        if(imgIndex < clsIndex){
-                            index += 0;
-                            buffer += (text.substring(0));
-                            // console.log("test7" + buffer);
+                if(text.match(bo) || text.match(im)){
+                    if(text.match(im)){
+                        if(clsIndex){
+                            if(imgIndex < clsIndex){
+                                index += 0;
+                                buffer += (text.substring(0));
+                                // console.log("test7" + buffer);
+                            }
                         }
+                        // console.log("test-");
+                    } else{
+                        index += (-(imgIndex + 1));
+                        buffer += (text.substring(0,text.length - (imgIndex + 1)));
+                        // console.log("test8" + buffer);
                     }
-                    // console.log("test-");
+                } else {
+                    if(text.match(bo)){
+                        if(bolfIndex){
+                            if(boldIndex < bolfIndex){
+                                index += 0;
+                                buffer += (text.substring(0));
+                                // console.log("test7" + buffer);
+                            }
+                        }
+                    } else {
+                        index += (-(boldIndex + 1));
+                        buffer += (text.substring(0,text.length - (boldIndex + 1)));
+                        // console.log("test8" + buffer);
+                    }
                 }
-                index += (-(imgIndex + 1));
-                buffer += (text.substring(0,text.length - (imgIndex + 1)));
-                // console.log("test8" + buffer);
-            } 
+            }
         }
     }
 
@@ -312,11 +332,19 @@ function Preview(){
                             value={ increment0buffer }
                             style = {{background: "white"}}
                             onChange={(e) => { 
-                                if(e.target.value) {setIncrement0Buffer(parseInt(e.target.value));} 
-                                else {setIncrement0Buffer(0)}
+                                if(e.target.value) {
+                                    setIncrement0Buffer(parseInt(e.target.value));
+                                    setIncrement1Buffer((parseInt(e.target.value) > 500)?(parseInt(e.target.value) - 500):500);
+                                    setIncrement2Buffer((parseInt(e.target.value) > 800)?(parseInt(e.target.value) - 800):200);
+                                } 
+                                else {
+                                    setIncrement0Buffer(0);
+                                    setIncrement1Buffer(0);
+                                    setIncrement2Buffer(0);
+                                }
                             }}
                         /><br/>
-                        <TextField
+                        {/* <TextField
                             fullWidth 
                             variant='outlined'
                             id='InputField'
@@ -339,7 +367,7 @@ function Preview(){
                                 if(e.target.value) {setIncrement2Buffer(parseInt(e.target.value));} 
                                 else {setIncrement2Buffer(0)}
                             }}
-                        /><br/>                        
+                        /><br/>*/}
                         <Button
                             type='submit'
                             variant='contained'
