@@ -353,7 +353,7 @@ function UI(){
         ));
         var iterator: number = 0;
         while(iterator < contentWarehouse.length){
-            buffer = buffer + contentWarehouse[contentWarehouse.length - (iterator + 1)] + "<br\>";
+            buffer = buffer + contentWarehouse[contentWarehouse.length - (iterator + 1)];
             iterator = iterator + 1;
         }
         setContentUsage(buffer);
@@ -446,9 +446,13 @@ function UI(){
                                 onClick = {() => contentBuffer(content, idx)}
                                 >
 
-                                    <p className = {ui.heading} id = 'ContentHeading'>
+                                    {/* <p className = {ui.heading} id = 'ContentHeading'>
                                         { content.header }
-                                    </p>
+                                    </p> */}
+
+                                    <p className = {ui.matter} id = 'ContentHeading' style={{}}
+                                    dangerouslySetInnerHTML = {{ __html: content.header}}
+                                    />
 
                                     <p className = {ui.matter} id = 'ContentMatter' style={{}}
                                     dangerouslySetInnerHTML = {{ __html: content.matter}}
@@ -526,7 +530,7 @@ function UI(){
                 {
                     (contentForm) &&
                     (<form onSubmit = {submitContent} className = {ui.form} id = 'ContentForm'>
-                        <TextField
+                        {/* <TextField
                             fullWidth 
                             variant='outlined'
                             id='InputField'
@@ -534,10 +538,19 @@ function UI(){
                             value={ headerBuffer }
                             className={ ui.field }
                             onChange={(e) => { setHeaderBuffer(e.target.value); }}
-                        /><br/>                        
+                        /><br/>    */}
                         { 
                             RichText({
-                                id: "rte", 
+                                id: "rteHeader", 
+                                controls: [['bold']],
+                                className: ui.field,
+                                value: headerBuffer,
+                                onChange: (e) => {setHeaderBuffer(e);}
+                            }) 
+                        }<br/>                     
+                        { 
+                            RichText({
+                                id: "rteMatter", 
                                 controls: [
                                     ['italic','link', 'image'],
                                     ['unorderedList', 'orderedList'],

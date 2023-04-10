@@ -5,6 +5,7 @@ import { Inter } from '@next/font/google'
 import pdf from '@/styles/Pdf.module.css'
 
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import jsPDF from 'jspdf';
 
 import * as React from 'react';
@@ -24,10 +25,15 @@ function Preview(){
     const [contentWarehouse,setContentWarehouse] = useLocalStorage<string[]>('contentManager',[]);
     const [contentUsage,setContentUsage] = useLocalStorage<string>("contentDelivery","");
 
-    var index: number = 700;
-    var increment0: number = 950;
-    var increment1: number = 700;
-    var increment2: number = 550;
+    const [increment0,setIncrement0] = useLocalStorage('i0',2500);
+    const [increment1,setIncrement1] = useLocalStorage('i1',2000);
+    const [increment2,setIncrement2] = useLocalStorage('i2',1700);
+
+    const [increment0buffer,setIncrement0Buffer] = useState(increment0);
+    const [increment1buffer,setIncrement1Buffer] = useState(increment1);
+    const [increment2buffer,setIncrement2Buffer] = useState(increment2);
+
+    var index: number = 1600;
     var buffer: string = "";
 
     var arrNode: any = [];
@@ -53,31 +59,31 @@ function Preview(){
         
         if(text) {
             if((test0 == "\u003Cp\u003E\u003Cbr\u003E")) {
-                index += (text.length - 7);
+                index += (-7);
                 buffer += (text.substring(0,text.length - 7));
                 // console.log("test0" + buffer);
             } else if((test1 == "\u003Cp\u003E\u003Cbr")){
-                index += (text.length - 6);
+                index += (-6);
                 buffer += (text.substring(0,text.length - 6));
                 // console.log("test1" + buffer);
             }  else if((test2 == "\u003Cp\u003E\u003Cb")) {
-                index += (text.length - 5);
+                index += (-5);
                 buffer += (text.substring(0,text.length - 5));
                 // console.log("test2" + buffer);
             } else if((test3 == "\u003Cimg") || (test3 == "\u003Cp\u003E\u003C")) {
-                index += (text.length - 4);
+                index += (-4);
                 buffer += (text.substring(0,text.length - 4));
                 // console.log("test3" + buffer);
             } else if ((test4 == "\u003Cim") || (test4 == "\u003Cp\u003E") || (test4 == "\u003Cbr")) {
-                index += (text.length - 3);
+                index += (-3);
                 buffer += (text.substring(0,text.length - 3));
                 // console.log("test4" + buffer);
             } else if ((test5 == "\u003Ci") || (test5 == "\u003Cp") || (test5 == "\u003Cb")) {
-                index += (text.length - 2);
+                index += (-2);
                 buffer += (text.substring(0,text.length - 2));
                 // console.log("test5" + buffer);
             } else if(test6 == "\u003C"){
-                index += (text.length - 1);
+                index += (-1);
                 buffer += (text.substring(0,text.length - 1));
                 // console.log("test6" + buffer);
             } else {
@@ -87,14 +93,14 @@ function Preview(){
                 if(text.match(im)){
                     if(clsIndex){
                         if(imgIndex < clsIndex){
-                            index += (text.length);
+                            index += 0;
                             buffer += (text.substring(0));
                             // console.log("test7" + buffer);
                         }
                     }
                     // console.log("test-");
                 }
-                index += (text.length - (imgIndex + 1));
+                index += (-(imgIndex + 1));
                 buffer += (text.substring(0,text.length - (imgIndex + 1)));
                 // console.log("test8" + buffer);
             } 
@@ -174,164 +180,64 @@ function Preview(){
                 } else {
                     if(counter == 2){
                         text = text.substring(0, increment2);
+                        index += increment2;
                     }
                     else if(counter == 1){
                         text = text.substring(0, increment1);
+                        index += increment1;
                     } else{
                         text = text.substring(0, increment0);
+                        index += increment0;
                     }
-
-                    var test0 = text.slice(-7);
-                    var test1 = text.slice(-6);
-                    var test2 = text.slice(-5);
-                    var test3 = text.slice(-4);
-                    var test4 = text.slice(-3);
-                    var test5 = text.slice(-2);
-                    var test6 = text.slice(-1);
-
-                    // console.log(test0)
-                    // console.log(test1)
-                    // console.log(test2)
-                    // console.log(test3)
-                    // console.log(test4)
-                    // console.log(test5)
-                    // console.log(test6)
-
-                    
-                    
-                    if(text) {
-                        if((test0 == "\u003Cp\u003E\u003Cbr\u003E")) {
-                            index += (text.length - 7);
-                            buffer += (text.substring(0,text.length - 7));
-                            // console.log("test0" + buffer);
-                        } else if((test1 == "\u003Cp\u003E\u003Cbr")){
-                            index += (text.length - 6);
-                            buffer += (text.substring(0,text.length - 6));
-                            // console.log("test1" + buffer);
-                        }  else if((test2 == "\u003Cp\u003E\u003Cb")) {
-                            index += (text.length - 5);
-                            buffer += (text.substring(0,text.length - 5));
-                            // console.log("test2" + buffer);
-                        } else if((test3 == "\u003Cimg") || (test3 == "\u003Cp\u003E\u003C")) {
-                            index += (text.length - 4);
-                            buffer += (text.substring(0,text.length - 4));
-                            // console.log("test3" + buffer);
-                        } else if ((test4 == "\u003Cim") || (test4 == "\u003Cp\u003E") || (test4 == "\u003Cbr")) {
-                            index += (text.length - 3);
-                            buffer += (text.substring(0,text.length - 3));
-                            // console.log("test4" + buffer);
-                        } else if ((test5 == "\u003Ci") || (test5 == "\u003Cp") || (test5 == "\u003Cb")) {
-                            index += (text.length - 2);
-                            buffer += (text.substring(0,text.length - 2));
-                            // console.log("test5" + buffer);
-                        } else if(test6 == "\u003C"){
-                            index += (text.length - 1);
-                            buffer += (text.substring(0,text.length - 1));
-                            // console.log("test6" + buffer);
-                        } else {
-                            var im = /<img.*/g;
-                            var imgIndex = text.lastIndexOf("\u003Cimg");
-                            var clsIndex = text.lastIndexOf("\u003E");
-                            if(text.match(im)){
-                                if(clsIndex){
-                                    if(imgIndex < clsIndex){
-                                        index += (text.length);
-                                        buffer += (text.substring(0));
-                                        // console.log("test7" + buffer);
-                                    }
-                                }
-                                index += (text.length - (imgIndex + 1));
-                                buffer += (text.substring(0,text.length - (imgIndex + 1)));
-                                // console.log("test-");
-                            } else{
-                                index += (text.length);
-                                buffer += (text.substring(0));
-                            }
-                            // console.log("test8" + buffer);
-                        }
-                    }
+                    if(index >= contentUsage.length){index = contentUsage.length;}
+                    tester(text);
                 }
+
             } else {
                 if(counter == 2){
                     text = text.substring(0, increment2);
+                    index += increment2;
                 }
                 else if(counter == 1){
                     text = text.substring(0, increment1);
+                    index += increment1;
                 } else{
                     text = text.substring(0, increment0);
+                    index += increment0;
                 }
-
-                var test0 = text.slice(-7);
-                var test1 = text.slice(-6);
-                var test2 = text.slice(-5);
-                var test3 = text.slice(-4);
-                var test4 = text.slice(-3);
-                var test5 = text.slice(-2);
-                var test6 = text.slice(-1);
-
-                // console.log(test0)
-                // console.log(test1)
-                // console.log(test2)
-                // console.log(test3)
-                // console.log(test4)
-                // console.log(test5)
-                // console.log(test6)
-
-                
-                
-                if(text) {
-                    if((test0 == "\u003Cp\u003E\u003Cbr\u003E")) {
-                        index += (text.length - 7);
-                        buffer += (text.substring(0,text.length - 7));
-                        // console.log("test0" + buffer);
-                    } else if((test1 == "\u003Cp\u003E\u003Cbr")){
-                        index += (text.length - 6);
-                        buffer += (text.substring(0,text.length - 6));
-                        // console.log("test1" + buffer);
-                    }  else if((test2 == "\u003Cp\u003E\u003Cb")) {
-                        index += (text.length - 5);
-                        buffer += (text.substring(0,text.length - 5));
-                        // console.log("test2" + buffer);
-                    } else if((test3 == "\u003Cimg") || (test3 == "\u003Cp\u003E\u003C")) {
-                        index += (text.length - 4);
-                        buffer += (text.substring(0,text.length - 4));
-                        // console.log("test3" + buffer);
-                    } else if ((test4 == "\u003Cim") || (test4 == "\u003Cp\u003E") || (test4 == "\u003Cbr")) {
-                        index += (text.length - 3);
-                        buffer += (text.substring(0,text.length - 3));
-                        // console.log("test4" + buffer);
-                    } else if ((test5 == "\u003Ci") || (test5 == "\u003Cp") || (test5 == "\u003Cb")) {
-                        index += (text.length - 2);
-                        buffer += (text.substring(0,text.length - 2));
-                        // console.log("test5" + buffer);
-                    } else if(test6 == "\u003C"){
-                        index += (text.length - 1);
-                        buffer += (text.substring(0,text.length - 1));
-                        // console.log("test6" + buffer);
-                    } else {
-                        var im = /<img.*/g;
-                        var imgIndex = text.lastIndexOf("\u003Cimg");
-                        var clsIndex = text.lastIndexOf("\u003E");
-                        if(text.match(im)){
-                            if(clsIndex){
-                                if(imgIndex < clsIndex){
-                                    index += (text.length);
-                                    buffer += (text.substring(0));
-                                    // console.log("test7" + buffer);
-                                }
-                            }
-                            index += (text.length - (imgIndex + 1));
-                            buffer += (text.substring(0,text.length - (imgIndex + 1)));
-                            // console.log("test-");
-                        } else{
-                            index += (text.length);
-                            buffer += (text.substring(0));
-                        }
-                        // console.log("test8" + buffer);
-                    }
-                }
+                if(index >= contentUsage.length){index = contentUsage.length;}
+                tester(text);
             }
         }
+        console.log(buffer)
+    }
+
+    const callFirstPage = (num: number) => {
+        return (
+
+                <div className = {pdf.page}>
+
+                    <div style = {{position: "absolute", left: "43%"}} id = "header">
+                        { header }
+                    </div>
+    
+                    {loadData(num)} 
+                    
+                    <div style = {{position: "absolute", bottom: "0.25cm", left: "38%"}} id = "footer">
+                        { footer + " Page No: " + 1}
+                    </div>       
+                    
+                </div> 
+        );
+            
+    }
+
+    const callPageData:any = () => {
+        
+        while(index < contentUsage.length - 1){
+            callData()
+            arrNode.push(buffer)
+        }         
     }
 
     //Requirement
@@ -373,37 +279,6 @@ function Preview(){
 		});
 	};
 
-    const callFirstPage = (num: number) => {
-        return (
-
-                <div className = {pdf.page}>
-
-                    <div style = {{position: "absolute", left: "43%"}} id = "header">
-                        { header }
-                    </div>
-    
-                    {loadData(num)} 
-                    
-                    <div style = {{position: "absolute", bottom: "0.25cm", left: "38%"}} id = "footer">
-                        { footer + " Page No: " + 1}
-                    </div>       
-                    
-                </div> 
-        );
-            
-    }
-
-    const callPageData:any = () => {
-        
-        while(index < contentUsage.length - 1){
-            console.log(index)
-            callData()
-            arrNode.push(buffer)
-            console.log(index)
-        } 
-        
-    }
-
     return (        
         <>
 
@@ -418,6 +293,59 @@ function Preview(){
                             Back
                     </Button>
                 </a>
+
+            </div>
+
+            <div className = {pdf.label}>
+
+                <form className = {pdf.form} id = 'IncrementForm' onSubmit = { () => {
+                        setIncrement0(increment0buffer);
+                        setIncrement1(increment1buffer);
+                        setIncrement2(increment2buffer);
+                    }} 
+                >
+                        <TextField
+                            fullWidth 
+                            variant='outlined'
+                            id='InputField'
+                            label='Header'
+                            value={ increment0buffer }
+                            style = {{background: "white"}}
+                            onChange={(e) => { 
+                                if(e.target.value) {setIncrement0Buffer(parseInt(e.target.value));} 
+                                else {setIncrement0Buffer(0)}
+                            }}
+                        /><br/>
+                        <TextField
+                            fullWidth 
+                            variant='outlined'
+                            id='InputField'
+                            label='Header'
+                            value={ increment1buffer }
+                            style = {{background: "white"}}
+                            onChange={(e) => { 
+                                if(e.target.value) {setIncrement1Buffer(parseInt(e.target.value));} 
+                                else {setIncrement1Buffer(0)}
+                            }}
+                        /><br/>
+                        <TextField
+                            fullWidth 
+                            variant='outlined'
+                            id='InputField'
+                            label='Header'
+                            value={ increment2buffer }
+                            style = {{background: "white"}}
+                            onChange={(e) => { 
+                                if(e.target.value) {setIncrement2Buffer(parseInt(e.target.value));} 
+                                else {setIncrement2Buffer(0)}
+                            }}
+                        /><br/>                        
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            style={{margin: 'auto', width: '10em', backgroundColor: '#0ff5e3', color: '#23243d'}}
+                        >Adjust Height</Button>
+                    </form>
 
             </div>
 
