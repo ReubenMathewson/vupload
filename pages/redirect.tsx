@@ -14,6 +14,9 @@ import useLocalStorage from "use-local-storage";
 import { titleInformation, authorInformation, contentInformation } from './finalUI'
 import { useSetState } from '@mantine/hooks'
 
+const STRING: number = 0;
+const NUMBER: number = 1;
+
 function Preview(){
     const header: string = "Header goes here";
     const footer: string = "Footer";
@@ -118,9 +121,9 @@ function Preview(){
         }
     }
 
-    const loadData = (num: number) => {
+    const endTest = () => {
         var bufferText = contentUsage.substring(index); 
-        var si = bufferText.indexOf(" ");
+        var si = bufferText.indexOf("\u0020");
         var ni = bufferText.indexOf("&nbsp");
         var bi = bufferText.indexOf("\u003Cbr\u003E");
         var addIndex = 0
@@ -142,10 +145,15 @@ function Preview(){
                 addIndex = bi;
             }
         }
+        var endText = bufferText.substring(0,addIndex);
+        index += (addIndex + 1)
+        return endText;
+    }
 
-        index += addIndex;
+    const loadData = (num: number) => {
         var text = contentUsage.substring(0, index); 
         tester(text);
+        buffer += endTest()
         
         return (
             <>
@@ -189,31 +197,7 @@ function Preview(){
     }
 
     const callData = () => {
-        var bufferText = contentUsage.substring(index); 
-        var si = bufferText.indexOf(" ");
-        var ni = bufferText.indexOf("&nbsp");
-        var bi = bufferText.indexOf("\u003Cbr\u003E");
-        var addIndex = 0
 
-        if(si || ni || bi){
-            if(si && ni && bi){
-                addIndex = Math.min(si, ni, bi);
-            } else if(si && ni && (bi == null)){
-                addIndex = Math.min(si, ni);
-            } else if(si && bi && (ni == null)){
-                addIndex = Math.min(si, bi);
-            } else if(ni && bi && (si == null)){
-                addIndex = Math.min(ni, bi);
-            } else if(si && (bi == null) && (ni == null)){
-                addIndex = si;
-            } else if(ni && (bi == null) && (si == null)){
-                addIndex = ni;
-            } else if(bi && (ni == null) && (si == null)){
-                addIndex = bi;
-            }
-        }
-
-        index += addIndex;
         var text:string = contentUsage.substring(index);
         buffer = "";
         var counter: number = 0;
@@ -252,6 +236,8 @@ function Preview(){
                     }
                     if(index >= contentUsage.length){index = contentUsage.length;}
                     tester(text);
+                    buffer += endTest();
+    
                 }
 
             } else {
@@ -268,6 +254,8 @@ function Preview(){
                 }
                 if(index >= contentUsage.length){index = contentUsage.length;}
                 tester(text);
+                buffer += endTest();
+
             }
         }
     }
