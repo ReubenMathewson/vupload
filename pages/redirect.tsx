@@ -16,7 +16,7 @@ import { useSetState } from '@mantine/hooks'
 
 function Preview(){
     const header: string = "Header goes here";
-    const footer: string = "Footer goes here";
+    const footer: string = " ";
     //Data
     const [titlebar, setTitlebar] = useLocalStorage<titleInformation>('titlebar',{ title: '' });    
     const [authors, setAuthors] = useLocalStorage<authorInformation[]>('authorStorage',[]);
@@ -426,11 +426,11 @@ function Preview(){
 
                             <div className = {pdf.page} key = {idx.toString()}>
 
-                                <div id = "header" style = {{position: "absolute", left: "43%"}} >
+                                <div id = "header" style = {{left: "43%"}} >
                                     { header }
                                 </div>
                             
-                                <div className = {pdf.contentData} id = { 'DisplayContent'}>
+                                <div className = {pdf.contentData} id = { 'DisplayContent'} style = {{marginBottom: "0.5cm"}}>
 
                                     <p className = {pdf.matter} id = 'ContentHeading'
                                         dangerouslySetInnerHTML = {{ __html: divisions}}></p>
