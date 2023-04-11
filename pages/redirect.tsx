@@ -58,77 +58,93 @@ function Preview(){
         
         
         if(text) {
+
             if((test0 == "\u003Cp\u003E\u003Cbr\u003E")) {
                 index += (-7);
                 buffer += (text.substring(0,text.length - 7));
-                // console.log("test0" + buffer);
+                // console.log("test0");
             } else if((test1 == "\u003Cp\u003E\u003Cbr")){
                 index += (-6);
                 buffer += (text.substring(0,text.length - 6));
-                // console.log("test1" + buffer);
+                // console.log("test1");
             }  else if((test2 == "\u003Cp\u003E\u003Cb")) {
                 index += (-5);
                 buffer += (text.substring(0,text.length - 5));
-                // console.log("test2" + buffer);
+                // console.log("test2");
             } else if((test3 == "\u003Cimg") || (test3 == "\u003Cp\u003E\u003C")) {
                 index += (-4);
                 buffer += (text.substring(0,text.length - 4));
-                // console.log("test3" + buffer);
+                // console.log("test3");
             } else if ((test4 == "\u003Cim") || (test4 == "\u003Cp\u003E") || (test4 == "\u003Cbr")) {
                 index += (-3);
                 buffer += (text.substring(0,text.length - 3));
-                // console.log("test4" + buffer);
-            } else if ((test5 == "\u003Ci") || (test5 == "\u003Cp") || (test5 == "\u003Cb")) {
+                // console.log("test4");
+            }else if ((test5 == "\u003Ci") || (test5 == "\u003Cp") || (test5 == "\u003Cb")) {
                 index += (-2);
                 buffer += (text.substring(0,text.length - 2));
-                // console.log("test5" + buffer);
+                // console.log("test5");
             } else if(test6 == "\u003C"){
                 index += (-1);
                 buffer += (text.substring(0,text.length - 1));
-                // console.log("test6" + buffer);
+                // console.log("test6");
             } else {
-                var bo = /<b>.*/g;
+                var boi = /\u003Cstrong\u003E.*/g;
+                var bof = /\u003Cstrong\u003E.*\u003C\u002Fstrong\u003E/g;
+                var boldIndex = text.lastIndexOf("\u003Cstrong\u003E");
+                
                 var im = /<img.*/g;
-                var boldIndex = text.lastIndexOf("\u003cb\u003E");
-                var bolfIndex = text.lastIndexOf("\u003c\\b\u003E");
                 var imgIndex = text.lastIndexOf("\u003Cimg");
                 var clsIndex = text.lastIndexOf("\u003E");
-                if(text.match(bo) || text.match(im)){
-                    if(text.match(im)){
-                        if(clsIndex){
-                            if(imgIndex < clsIndex){
-                                index += 0;
-                                buffer += (text.substring(0));
-                                // console.log("test7" + buffer);
-                            }
+                
+                if((text.match(boi)) && (text.match(bof) == null)){
+                    console.log("Found it")
+                    index += (-(boldIndex + 1));
+                    buffer += (text.substring(0,text.length - (boldIndex + 1)));
+                } else if(text.match(im)){
+                    if(clsIndex){
+                        if(imgIndex < clsIndex){
+                            index += 0;
+                            buffer += (text.substring(0));
+                            // console.log("test7");
                         }
-                        // console.log("test-");
-                    } else{
-                        index += (-(imgIndex + 1));
-                        buffer += (text.substring(0,text.length - (imgIndex + 1)));
-                        // console.log("test8" + buffer);
                     }
-                } else {
-                    if(text.match(bo)){
-                        if(bolfIndex){
-                            if(boldIndex < bolfIndex){
-                                index += 0;
-                                buffer += (text.substring(0));
-                                // console.log("test7" + buffer);
-                            }
-                        }
-                    } else {
-                        index += (-(boldIndex + 1));
-                        buffer += (text.substring(0,text.length - (boldIndex + 1)));
-                        // console.log("test8" + buffer);
-                    }
-                }
+                    // console.log("test-");
+                } else{
+                    index += (-(imgIndex + 1));
+                    buffer += (text.substring(0,text.length - (imgIndex + 1)));
+                    // console.log("test8");
+                } 
             }
         }
     }
 
     const loadData = (num: number) => {
-        var text = contentUsage.substring(0, index);
+        var bufferText = contentUsage.substring(index); 
+        var si = bufferText.indexOf(" ");
+        var ni = bufferText.indexOf("&nbsp");
+        var bi = bufferText.indexOf("\u003Cbr\u003E");
+        var addIndex = 0
+
+        if(si || ni || bi){
+            if(si && ni && bi){
+                addIndex = Math.min(si, ni, bi);
+            } else if(si && ni && (bi == null)){
+                addIndex = Math.min(si, ni);
+            } else if(si && bi && (ni == null)){
+                addIndex = Math.min(si, bi);
+            } else if(ni && bi && (si == null)){
+                addIndex = Math.min(ni, bi);
+            } else if(si && (bi == null) && (ni == null)){
+                addIndex = si;
+            } else if(ni && (bi == null) && (si == null)){
+                addIndex = ni;
+            } else if(bi && (ni == null) && (si == null)){
+                addIndex = bi;
+            }
+        }
+
+        index += addIndex;
+        var text = contentUsage.substring(0, index); 
         tester(text);
         
         return (
@@ -173,6 +189,31 @@ function Preview(){
     }
 
     const callData = () => {
+        var bufferText = contentUsage.substring(index); 
+        var si = bufferText.indexOf(" ");
+        var ni = bufferText.indexOf("&nbsp");
+        var bi = bufferText.indexOf("\u003Cbr\u003E");
+        var addIndex = 0
+
+        if(si || ni || bi){
+            if(si && ni && bi){
+                addIndex = Math.min(si, ni, bi);
+            } else if(si && ni && (bi == null)){
+                addIndex = Math.min(si, ni);
+            } else if(si && bi && (ni == null)){
+                addIndex = Math.min(si, bi);
+            } else if(ni && bi && (si == null)){
+                addIndex = Math.min(ni, bi);
+            } else if(si && (bi == null) && (ni == null)){
+                addIndex = si;
+            } else if(ni && (bi == null) && (si == null)){
+                addIndex = ni;
+            } else if(bi && (ni == null) && (si == null)){
+                addIndex = bi;
+            }
+        }
+
+        index += addIndex;
         var text:string = contentUsage.substring(index);
         buffer = "";
         var counter: number = 0;
@@ -185,7 +226,7 @@ function Preview(){
         }
 
         if(counter == 3){
-            console.log("testI-3");
+            // console.log("testI-3");
 
         } else { 
             var imreg = /<img.*>/g
@@ -229,7 +270,6 @@ function Preview(){
                 tester(text);
             }
         }
-        console.log(buffer)
     }
 
     const callFirstPage = (num: number) => {
@@ -254,10 +294,10 @@ function Preview(){
 
     const callPageData:any = () => {
         
-        while(index < contentUsage.length - 1){
+        while(index < contentUsage.length){
             callData()
             arrNode.push(buffer)
-        }         
+        }
     }
 
     //Requirement
